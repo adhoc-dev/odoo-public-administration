@@ -67,7 +67,7 @@
                             </field>
                         </page>
                         <page string="Payment Orders">
-                            <field name="payment_group_ids" context="{'default_partner_type': 'supplier'}"/>
+                            <field name="payment_ids" context="{'default_partner_type': 'supplier'}"/>
                         </page>
                     </notebook>
                 </sheet>

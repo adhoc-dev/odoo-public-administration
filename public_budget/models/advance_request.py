@@ -75,8 +75,8 @@ class AdvanceRequest(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-    payment_group_ids = fields.One2many(
-        'account.payment.group',
+    payment_ids = fields.One2many(
+        'account.payment',
         'advance_request_id',
         string='Payment Orders',
     )
@@ -102,7 +102,7 @@ class AdvanceRequest(models.Model):
         self.ensure_one()
         partner = self.type_id.general_return_partner_id
         amount = sum(self.advance_request_line_ids.mapped('approved_amount'))
-        res = self.payment_group_ids.create({
+        res = self.payment_ids.create({
             'partner_id': partner.id,
             'unreconciled_amount': amount,
             'advance_request_id': self.id,
@@ -130,7 +130,7 @@ class AdvanceRequest(models.Model):
 
     def action_cancel(self):
         for rec in self:
-            open_payments = rec.payment_group_ids.filtered(
+            open_payments = rec.payment_ids.filtered(
                 lambda x: x.state != 'cancel')
             if open_payments:
                 raise ValidationError(_(

@@ -20,7 +20,6 @@ class AccountPayment(models.Model):
     # para no tener que cambiar tanto el metodo get_period_payments_domain
     # agregamos este campo related
     to_signature_date = fields.Date(
-        related='payment_group_id.to_signature_date',
         readonly=False,
     )
     assignee_id = fields.Many2one(
@@ -84,10 +83,10 @@ class AccountPayment(models.Model):
         """
         raise ValidationError(_('No implementado todavía'))
 
-    @api.onchange('payment_group_id')
-    def onchange_payment_group_id(self):
-        """ Hacemos esto porque los pagos deben tener si o si el campo date seteado y como borramos el campo payment_date del payment group entonces necesitamos establecérselo al pago """
-        currency_payment_date = self.date
-        super().onchange_payment_group_id()
-        if self.payment_group_id and not self.date:
-            self.date = currency_payment_date
+    # @api.onchange('payment_group_id')
+    # def onchange_payment_group_id(self):
+    #     """ Hacemos esto porque los pagos deben tener si o si el campo date seteado y como borramos el campo payment_date del payment group entonces necesitamos establecérselo al pago """
+    #     currency_payment_date = self.date
+    #     super().onchange_payment_group_id()
+    #     if self.payment_group_id and not self.date:
+    #         self.date = currency_payment_date

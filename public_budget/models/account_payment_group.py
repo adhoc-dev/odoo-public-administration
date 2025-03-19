@@ -5,21 +5,21 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class AccountPaymentGroup(models.Model):
+class AccountPayment(models.Model):
 
-    _inherit = 'account.payment.group'
+    _inherit = 'account.payment'
 
     # We add signature states
-    state = fields.Selection(
-        selection_add=[
-            ('draft', 'Borrador'),
-            ('confirmed', 'Confirmado'),
-            ('signature_process', 'En Proceso de Firma'),
-            ('signed', 'Firmado'),
-            # we also change posted for paid
-            ('posted', 'Pagado'),
-            ('cancel', 'Cancelled'),
-        ])
+    # state = fields.Selection(
+    #     selection_add=[
+    #         ('draft', 'Borrador'),
+    #         ('confirmed', 'Confirmado'),
+    #         ('signature_process', 'En Proceso de Firma'),
+    #         ('signed', 'Firmado'),
+    #         # we also change posted for paid
+    #         ('posted', 'Pagado'),
+    #         ('cancel', 'Cancelled'),
+    #     ])
     # agregamos reference que fue depreciado y estan acostumbrados a usar
     reference = fields.Char(
         string='Ref. pago',
@@ -46,7 +46,7 @@ class AccountPaymentGroup(models.Model):
         search='_search_budget_positions',
     )
     # lo agregamos por compatiblidad hacia atras y tmb porque es mas facil
-    invoice_ids = fields.Many2many(
+    public_invoice_ids = fields.Many2many(
         comodel_name='account.move',
         string='Facturas Relacionadas',
         compute='_compute_budget_positions_and_invoices'
@@ -212,7 +212,7 @@ class AccountPaymentGroup(models.Model):
             # si la factura está paga, considera el monto de factura para
             # por temas de performance y para ser más robusto por si se
             # pierde el link de to pay lines del pago
-            already_paying = self.transaction_id.payment_group_ids.filtered(
+            already_paying = self.transaction_id.payment_ids.filtered(
                 lambda x: x.state not in ['cancel', 'draft'] and x != self
             ).mapped('to_pay_move_line_ids')
             if rec.to_pay_move_line_ids & already_paying:
@@ -312,8 +312,8 @@ class AccountPaymentGroup(models.Model):
             # si esta validado entonces las facturas son las macheadas, si no
             # las seleccionadas
             move_lines = rec.matched_move_line_ids or rec.to_pay_move_line_ids
-            rec.invoice_ids = move_lines.mapped('move_id').filtered(lambda m: m.is_invoice())
-            rec.budget_position_ids = rec.invoice_ids.mapped(
+            rec.public_invoice_ids = move_lines.mapped('move_id').filtered(lambda m: m.is_invoice())
+            rec.budget_position_ids = rec.public_invoice_ids.mapped(
                 'invoice_line_ids.definitive_line_id.preventive_line_id.'
                 'budget_position_id')
 
@@ -346,7 +346,7 @@ class AccountPaymentGroup(models.Model):
         if self.transaction_id:
             # con esto validamos que no se haya mandado a pagar en otra
             # orden de pago (si dejamos si está cancelada)
-            already_paying = self.transaction_id.payment_group_ids.filtered(
+            already_paying = self.transaction_id.payment_ids.filtered(
                 lambda x: x.state != 'cancel').mapped('to_pay_move_line_ids')
             domain.extend([
                 ('move_id.transaction_id', '=', self.transaction_id.id),
@@ -369,7 +369,7 @@ class AccountPaymentGroup(models.Model):
         # when payment state changes we recomputed related invoice values
         # we could improove this filtering by relevant states
         for rec in self:
-            rec.invoice_ids.sudo()._compute_to_pay_amount()
+            rec.public_invoice_ids.sudo()._compute_to_pay_amount()
 
     @api.constrains('confirmation_date', 'payment_min_date', 'payment_date')
     def check_dates(self):
@@ -377,7 +377,7 @@ class AccountPaymentGroup(models.Model):
         for rec in self:
             if not rec.confirmation_date:
                 continue
-            for invoice in rec.invoice_ids:
+            for invoice in rec.public_invoice_ids:
                 if rec.confirmation_date < invoice.invoice_date:
                     raise ValidationError(_(
                         'La fecha de confirmación no puede ser menor a la '

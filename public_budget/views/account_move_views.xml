@@ -3,7 +3,7 @@
 
 
  <record id="view_public_budget_invoice_tree" model="ir.ui.view">
-        <field name="name">public_budget.move.tree</field>
+        <field name="name">public_budget.move.list</field>
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_invoice_tree"/>
         <field name="arch" type="xml">
@@ -12,13 +12,13 @@
                 <attribute name="groups"></attribute>
             </field>
             </field>
-            <tree position="attributes">
+            <list position="attributes">
                 <attribute name="limit">300</attribute>
                 <attribute name="create">false</attribute>
-            </tree>
-            <tree position="inside">
+            </list>
+            <list position="inside">
                 <button name="action_post" type="object" states="draft" string="Validate" groups="account.group_account_invoice" icon="fa-arrow-right"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -55,7 +55,7 @@
                 <attribute name="invisible">1</attribute>
             </button>
 
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="after">
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='account_id']" position="after">
                 <field name="definitive_line_id"/>
             </xpath>
             <!-- TODO ver si queremos sacar el botón o no hace falta -->

@@ -222,7 +222,7 @@ class PublicBudgetExpedient(models.Model):
             for record in self:
                 admin_users = self.env['res.users'].sudo().search([('groups_id', 'in', [self.env.ref('base.group_system').id])])
                 if new_pages < record.pages:
-                    if not (self.env.user in admin_users and self.user_has_groups('base.group_no_one')):
+                    if not (self.env.user in admin_users and self.env.user.has_group('base.group_no_one')):
                         raise ValidationError(_('No tiene autorización para modificar la cantidad de páginas de un expediente'))
                 if new_pages != record.pages:
                     message = _("Cantidad de páginas modificadas de %d a %d") % (record.pages, new_pages)
@@ -287,15 +287,13 @@ class PublicBudgetExpedient(models.Model):
         self.write({'state': 'cancel'})
         return True
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for rec in self:
             if len(rec.cover) > 200:
-                result.append((rec.id, "%s - %s..." % (rec.number, rec.cover[:200])))
+                rec.display_name = "%s - %s..." % (rec.number, rec.cover[:200])
             else:
                 result.append(
                     (rec.id, "%s - %s" % (rec.number, rec.cover)))
-        return result
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):

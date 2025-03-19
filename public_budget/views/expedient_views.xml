@@ -94,11 +94,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -129,10 +125,10 @@
 
     <!-- TREEVIEW -->
     <record id="view_public_budget_expedient_tree" model="ir.ui.view">
-        <field name="name">public_budget.expedient.tree</field>
+        <field name="name">public_budget.expedient.list</field>
         <field name="model">public_budget.expedient</field>
         <field name="arch" type="xml">
-            <tree string="Expedient" decoration-muted="state=='cancelled'" decoration-info="state == 'open'" decoration-bf="state in ['annulled', 'closed']" decoration-danger="state in ()" create="false" edit="false">
+            <list string="Expedient" decoration-muted="state=='cancelled'" decoration-info="state == 'open'" decoration-bf="state in ['annulled', 'closed']" decoration-danger="state in ()" create="false" edit="false">
                 <field name="number"/>
                 <field name="issue_date" optional="hide"/>
                 <field name="cover"/>
@@ -148,20 +144,20 @@
                 <field name="subsidy_approved" optional="hide"/>
                 <field name="overdue" optional="hide"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="view_public_budget_expedient_tree2" model="ir.ui.view">
-        <field name="name">public_budget.expedient.tree.inherit</field>
+        <field name="name">public_budget.expedient.list.inherit</field>
         <field name="model">public_budget.expedient</field>
         <field name="inherit_id" ref="view_public_budget_expedient_tree"/>
         <field name="groups_id" eval="[(4, ref('group_portal_expedient')),(4, ref('group_secretary_usuario')),(4, ref('account.group_account_user')),(4, ref('group_habilitacion_usuario'))]"/>
         <field name="arch" type="xml">
-            <tree position="attributes">
+            <list position="attributes">
                 <attribute name="create">true</attribute>
                 <attribute name="edit">true</attribute>
-            </tree>
+            </list>
         </field>
     </record>
 

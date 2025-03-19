@@ -43,16 +43,16 @@
 
     <!-- TREEVIEW -->
     <record id="view_public_budget_budget_modification_tree" model="ir.ui.view">
-        <field name="name">public_budget.budget_modification.tree</field>
+        <field name="name">public_budget.budget_modification.list</field>
         <field name="model">public_budget.budget_modification</field>
         <field name="arch" type="xml">
-            <tree string="Budget Modification">
+            <list string="Budget Modification">
                 <field name="date"/>
                 <field name="type"/>
                 <field name="name"/>
                 <field name="reference"/>
                 <button name="%(action_budget_modification_report)d" help="Print" type="action" icon="fa-print"/>
-            </tree>
+            </list>
         </field>
     </record>
 

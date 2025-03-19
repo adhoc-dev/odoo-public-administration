@@ -59,7 +59,7 @@
                     </group>
                     <notebook>
                         <page string="Analysis">
-                            <field name="parent_budget_position_ids" context="{'budget_id':active_id, 'tree_view_ref': 'public_budget.view_budget_position_budget_tree'}"/>
+                            <field name="parent_budget_position_ids" context="{'budget_id':active_id, 'list_view_ref': 'public_budget.view_budget_position_budget_tree'}"/>
                         </page>
                         <page string="Detail">
                             <field name="budget_detail_ids" context="{'budget_id':active_id}"/>
@@ -79,11 +79,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -104,23 +100,23 @@
             </header>
             <!-- agregamos analysis_to_date acá para que no de error desde otros lugares -->
             <field name="parent_budget_position_ids" position="attributes">
-                <attribute name="context">{'budget_id':context.get('budget_id'), 'analysis_to_date': context.get('analysis_to_date'), 'tree_view_ref': 'public_budget.view_budget_position_budget_tree'}</attribute>
+                <attribute name="context">{'budget_id':context.get('budget_id'), 'analysis_to_date': context.get('analysis_to_date'), 'list_view_ref': 'public_budget.view_budget_position_budget_tree'}</attribute>
             </field>
         </field>
     </record>
 
     <!-- TREEVIEW -->
     <record id="view_public_budget_budget_tree" model="ir.ui.view">
-        <field name="name">public_budget.budget.tree</field>
+        <field name="name">public_budget.budget.list</field>
         <field name="model">public_budget.budget</field>
         <field name="arch" type="xml">
-            <tree string="Budget" decoration-muted="state=='cancelled'" decoration-info="state =='draft'" decoration-bf="state in ['pre_closed', 'open', 'closed']" decoration-danger="state in ()">
+            <list string="Budget" decoration-muted="state=='cancelled'" decoration-info="state =='draft'" decoration-bf="state in ['pre_closed', 'open', 'closed']" decoration-danger="state in ()">
                 <field name="name"/>
                 <!-- <field name="fiscalyear_id"/> -->
                 <field name="income_account_id"/>
                 <field name="expedient_id"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 

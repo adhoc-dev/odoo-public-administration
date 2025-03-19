@@ -44,15 +44,15 @@
 
     <!-- TREEVIEW -->
     <record id="view_public_budget_transaction_type_tree" model="ir.ui.view">
-        <field name="name">public_budget.transaction_type.tree</field>
+        <field name="name">public_budget.transaction_type.list</field>
         <field name="model">public_budget.transaction_type</field>
         <field name="arch" type="xml">
-            <tree string="Transaction Type">
+            <list string="Transaction Type">
                 <field name="name"/>
                 <field name="with_amount_restriction"/>
                 <field name="with_advance_payment"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-            </tree>
+            </list>
         </field>
     </record>
 

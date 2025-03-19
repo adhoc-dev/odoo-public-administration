@@ -221,10 +221,10 @@ class BudgetPosition(models.Model):
                 domain.append(('id', '!=', excluded_line_id))
 
             rec.draft_amount = sum([x['preventive_amount'] for x in self.env[
-                'public_budget.preventive_line'].read_group(
+                'public_budget.preventive_line']._read_group(
                 domain=domain,
-                fields=['budget_position_id', 'preventive_amount'],
                 groupby=['budget_position_id'],
+                aggregates=['preventive_amount:sum'],
             )])
 
             active_preventive_lines = self.env['public_budget.preventive_line'].with_context(
@@ -247,12 +247,10 @@ class BudgetPosition(models.Model):
             rec.balance_amount = rec.amount - preventive_amount
             _logger.debug('Finish getting amounts for budget position %s' % rec.name)
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for rec in self:
             result.append(
                 (rec.id, "%s - %s" % (rec.code, rec.name)))
-        return result
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):

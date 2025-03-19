@@ -34,18 +34,18 @@
     </record>
 
 <!-- because we generate checks on post, checks report is made from payments -->
-    <!-- payments tree view -->
+    <!-- payments list view -->
     <record model="ir.ui.view" id="view_account_payment_tree">
-        <field name="name">account.payment.tree</field>
+        <field name="name">account.payment.list</field>
         <field name="model">account.payment</field>
         <field name="priority">20</field>
         <field name="inherit_id" ref="account.view_account_payment_tree"/>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <!-- por ahora usamos metodo distinto para cambio de retenciones y de cheque, pero la idea sería implementar el mismo metodos -->
                 <button name="change_withholding" icon="fa-undo" type="object" attrs="{'invisible': ['|', '|', ('payment_type', '!=', 'outbound'), ('state', '!=', 'posted'), ('payment_method_code', '!=', 'withholding')]}" confirm="Seguro que desea devolver esta retención?"/>
                 <field name="payment_type" invisible="1"/>
-            </tree>
+            </list>
 
             <!-- reemplazmos campo name por orden de pago -->
             <field name="name" position="attributes">
@@ -62,20 +62,20 @@
 
     <!-- tree of payments on payment groups -->
     <record id="view_account_payment_from_group_tree" model="ir.ui.view">
-        <field name="name">account.payment.tree</field>
+        <field name="name">account.payment.list</field>
         <field name="model">account.payment</field>
         <field name="priority">50</field>
         <field name="inherit_id" ref="account_payment_group.view_account_payment_from_group_tree"/>
         <field name="arch" type="xml"> 
-            <tree position="attributes">
+            <list position="attributes">
                 <attribute name="decoration-muted">return_payment_id</attribute>
-            </tree>
-            <tree>
+            </list>
+            <list>
                 <field name="return_payment_id" invisible="1"/>
                 <!-- por ahora usamos metodo distinto para cambio de retenciones y de cheque, pero la idea sería implementar el mismo metodos -->
                 <button name="change_withholding" icon="fa-undo" type="object" attrs="{'invisible': ['|', '|', ('payment_type', '!=', 'outbound'), ('state', '!=', 'posted'), ('payment_method_code', '!=', 'withholding')]}" confirm="Seguro que desea devolver esta retención?"/>
                 <field name="payment_type" invisible="1"/>
-            </tree>
+            </list>
             <button name="%(l10n_ar_account_withholding.action_report_withholding_certificate)d" position="attributes">
                 <attribute name="invisible">1</attribute>
             </button>

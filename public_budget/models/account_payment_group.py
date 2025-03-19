@@ -273,7 +273,7 @@ class AccountPaymentGroup(models.Model):
     def to_signature_process(self):
         for rec in self:
             for payment in rec.payment_ids.filtered(
-                    lambda x: x.payment_method_code == 'check_printing'):
+                    lambda x: x.payment_method_code == 'own_checks'):
                 if not payment.check_number:
                     raise ValidationError(_(
                         'Para mandar a proceso de firma debe definir número '

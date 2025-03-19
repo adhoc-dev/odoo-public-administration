@@ -54,7 +54,7 @@
                     <notebook>
                         <page string="Lines">
                             <field name="advance_request_line_ids">
-                                <tree editable="top">
+                                <list editable="top">
                                     <field name="employee_id"/>
                                     <field name="description"/>
                                     <field name="debt_amount" states="draft" sum="Total"/>
@@ -63,7 +63,7 @@
                                     <field name="approved_amount" sum="Total"/>
                                     <field name="state" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Payment Orders">
@@ -77,17 +77,17 @@
 
     <!-- TREEVIEW -->
     <record id="view_public_budget_advance_request_tree" model="ir.ui.view">
-        <field name="name">public_budget.advance_request.tree</field>
+        <field name="name">public_budget.advance_request.list</field>
         <field name="model">public_budget.advance_request</field>
         <field name="arch" type="xml">
-            <tree string="advance_request" decoration-muted="state=='cancelled'" decoration-info="state == 'draft'" decoration-bf="state in ['approved', 'confirmed']" decoration-danger="state in ()">
+            <list string="advance_request" decoration-muted="state=='cancelled'" decoration-info="state == 'draft'" decoration-bf="state in ['approved', 'confirmed']" decoration-danger="state in ()">
                 <field name="name"/>
                 <field name="type_id"/>
                 <field name="date"/>
                 <field name="user_id"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 

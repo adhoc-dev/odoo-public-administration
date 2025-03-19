@@ -14,13 +14,13 @@
                     <field name="supplier_id" options="{'no_create': True}" domain="[('id', 'in', supplier_ids)]"/>
                     <field name="journal_id"/>
                     <field name="line_ids">
-                        <tree create="false" delete="false" editable="top">
+                        <list create="false" delete="false" editable="top">
                             <field name="definitive_line_id" force_save="1"/>
                             <field name="residual_amount" force_save="1"/>
                             <field name="to_invoice_amount"/>
                             <field name="full_imputation"/>
                             <field name="currency_id" invisible="1"/>
-                        </tree>
+                        </list>
                     </field>
                     <field name="to_invoice_amount"/>
                     <field name="invoice_date"/>

@@ -49,11 +49,7 @@
                         <field name="user_ids"/>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
+                <chatter/>
 
             </form>
         </field>
@@ -72,10 +68,10 @@
 
     <!-- TREEVIEW -->
     <record id="view_public_budget_location_tree" model="ir.ui.view">
-        <field name="name">public_budget.location.tree</field>
+        <field name="name">public_budget.location.list</field>
         <field name="model">public_budget.location</field>
         <field name="arch" type="xml">
-            <tree string="Location">
+            <list string="Location">
                 <field name="name"/>
                 <field name="user_id"/>
                 <field name="level"/>
@@ -83,7 +79,7 @@
                 <field name="building"/>
                 <field name="asset_management"/>
                 <field name="expedient_management"/>
-            </tree>
+            </list>
         </field>
     </record>
 

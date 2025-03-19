@@ -51,10 +51,10 @@
 
     <!-- TREEVIEW -->
     <record id="view_public_budget_funding_move_tree" model="ir.ui.view">
-        <field name="name">public_budget.funding_move.tree</field>
+        <field name="name">public_budget.funding_move.list</field>
         <field name="model">public_budget.funding_move</field>
         <field name="arch" type="xml">
-            <tree string="Funding Move" decoration-muted="state=='cancelled'" decoration-info="state == 'draft'" decoration-bf="state == 'confirmed'" decoration-danger="state in ()">
+            <list string="Funding Move" decoration-muted="state=='cancelled'" decoration-info="state == 'draft'" decoration-bf="state == 'confirmed'" decoration-danger="state in ()">
                 <field name="date"/>
                 <field name="name"/>
                 <field name="type"/>
@@ -64,7 +64,7 @@
                 <field name="budget_id" invisible="'from_budget' in context"/>
                 <field name="state"/>
                 <field name="currency_id" invisible="1"/>
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

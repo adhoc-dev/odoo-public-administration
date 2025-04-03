@@ -37,19 +37,19 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name" readonly="state == 'draft'"/>
-                            <field name="type_id" readonly="state == 'draft'"/>
-                            <field name="date" readonly="state == 'draft'"/>
+                            <field name="name" readonly="state != 'draft'"/>
+                            <field name="type_id" readonly="state != 'draft'"/>
+                            <field name="date" readonly="state != 'draft'"/>
                         </group>
                         <group>
-                            <field name="user_id" readonly="state == 'draft'"/>
-                            <field name="confirmation_date" invisible="not confirmation_date" readonly="state == 'draft'"/>
+                            <field name="user_id" readonly="state != 'draft'"/>
+                            <field name="confirmation_date" invisible="not confirmation_date" readonly="state != 'draft'"/>
                             <field name="move_id"/>
-                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
                         </group>
                     </group>
                     <button name="compute_debtors" type="object" string="Fill with Debtors" invisible="state != 'draft'"/>
-                    <field name="return_line_ids" readonly="state == 'draft'">
+                    <field name="return_line_ids" readonly="state != 'draft'">
                         <list string="Advance Return Line" editable="top">
                             <field name="employee_id"/>
                             <field name="debt_amount" invisible="state != 'draft'" sum="Total"/>
@@ -70,11 +70,11 @@
         <field name="model">public_budget.advance_return</field>
         <field name="arch" type="xml">
             <list string="Advance Return" decoration-muted="state=='cancelled'" decoration-info="state == 'draft'" decoration-bf="state == 'confirmed' " decoration-danger="state in ()">
-                <field name="name" readonly="state == 'draft'"/>
-                <field name="type_id" readonly="state == 'draft'"/>
-                <field name="date" readonly="state == 'draft'"/>
-                <field name="user_id" readonly="state == 'draft'"/>
-                <field name="company_id" groups="base.group_multi_company" readonly="state == 'draft'"/>
+                <field name="name" readonly="state != 'draft'"/>
+                <field name="type_id" readonly="state != 'draft'"/>
+                <field name="date" readonly="state != 'draft'"/>
+                <field name="user_id" readonly="state != 'draft'"/>
+                <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
                 <field name="state"/>
             </list>
         </field>

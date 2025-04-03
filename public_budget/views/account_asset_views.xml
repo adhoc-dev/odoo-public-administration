@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="expedient_id"/>
-                <field name="invoice_id" readonly="state == 'draft'"/>
+                <field name="invoice_id" readonly="state != 'draft'"/>
                 <field name="reference"/>
                 <field name="enrollment"/>
                 <field name="serial_number"/>
@@ -68,8 +68,8 @@
                     <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                     <field name="original_value" invisible="state == 'model'" readonly="state != 'draft' or original_move_line_ids"/>
                     <field name="acquisition_date" invisible="state == 'model'" readonly="state != 'draft' or original_move_line_ids"/>
-                    <field name="partner_id" context="{'res_partner_search_mode': 'supplier'}" readonly="state == 'draft'"/>
-                    <field name="invoice_id" domain="[('partner_id', '=', partner_id)]" readonly="state == 'draft'" options="{'no_create': True}"/>
+                    <field name="partner_id" context="{'res_partner_search_mode': 'supplier'}" readonly="state != 'draft'"/>
+                    <field name="invoice_id" domain="[('partner_id', '=', partner_id)]" readonly="state != 'draft'" options="{'no_create': True}"/>
                     <field name="comodato" invisible="state == 'model'"/>
                     <field name="patrimonial" invisible="state == 'model'"/>
                     <field name="reportable" invisible="state == 'model'"/>

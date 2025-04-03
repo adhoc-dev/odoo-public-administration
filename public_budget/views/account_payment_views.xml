@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
 
             <field name="date" position="after">
-                <field name="assignee_id" readonly="state == 'draft'"/>
+                <field name="assignee_id" readonly="state != 'draft'"/>
                 <field name="return_payment_id" invisible="not return_payment_id"/>
             </field>
             <field name="date" position="attributes">

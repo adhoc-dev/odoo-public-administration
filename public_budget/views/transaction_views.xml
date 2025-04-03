@@ -49,13 +49,13 @@
                     <field name="definitive_partner_type" invisible="1"/>
                     <group>
                         <group>
-                            <field name="issue_date" readonly="state == 'draft'"/>
-                            <field name="budget_id" readonly="state == 'draft'"/>
-                            <field name="name" readonly="state == 'draft'"/>
-                            <field name="expedient_id" domain="[('current_location_id', 'in', user_location_ids),('in_transit','=',False),('state','=','open')]" options="{'no_create': True}" readonly="state == 'draft'"/>
-                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'draft'"/>
-                            <field name="type_id" readonly="state == 'draft'"/>
-                            <field name="partner_id" invisible="not type_with_advance_payment" required="type_with_advance_payment" readonly="state == 'draft'"/>
+                            <field name="issue_date" readonly="state != 'draft'"/>
+                            <field name="budget_id" readonly="state != 'draft'"/>
+                            <field name="name" readonly="state != 'draft'"/>
+                            <field name="expedient_id" domain="[('current_location_id', 'in', user_location_ids),('in_transit','=',False),('state','=','open')]" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                            <field name="type_id" readonly="state != 'draft'"/>
+                            <field name="partner_id" invisible="not type_with_advance_payment" required="type_with_advance_payment" readonly="state != 'draft'"/>
                             <field name="user_id"/>
                         </group>
                         <!-- <group col="1"> -->
@@ -104,7 +104,7 @@
                             <field name="advance_preventive_line_ids" invisible="not type_with_advance_payment" context="{'default_definitive_partner_type': definitive_partner_type, 'default_advance_line': 1, 'default_preventive_status': 'confirmed', 'advance_line': 1}"/>
                             <label for="preventive_line_ids" string="Settlement Lines" invisible="not type_with_advance_payment"/>
                             <!-- send transaction to force onchange -->
-                            <field name="preventive_line_ids" context="{'default_transaction_id': id, 'default_definitive_partner_type': definitive_partner_type,}" readonly="state == 'open'"/>
+                            <field name="preventive_line_ids" context="{'default_transaction_id': id, 'default_definitive_partner_type': definitive_partner_type,}" readonly="state != 'open'"/>
                         </page>
                         <page string="Payment Orders and Refunds" invisible="not type_with_advance_payment">
                             <button class="oe_link" string="Create Payment Order" invisible="state != 'open'" type="object" name="action_new_payment"/>
@@ -122,7 +122,7 @@
                             <button class="oe_link" string="Create Payment Order" invisible="state != 'open'" type="object" name="action_new_payment"/>
                                 or
                             <button class="oe_link" string="Mass Payment Order Create" invisible="state != 'open'" type="object" name="mass_payment_group_create" confirm="Se van a generar ordenes de pago para todos los comprobantes que no se encuentren en ordenes de pago, seguro que quiere continuar?"/>
-                            <field name="payment_ids" context="{'default_partner_type': 'supplier', 'default_transaction_id':id}" readonly="state == 'open'"/>
+                            <field name="payment_ids" context="{'default_partner_type': 'supplier', 'default_transaction_id':id}" readonly="state != 'open'"/>
                         </page>
                         <page string="Notes">
                             <field name="note"/>
@@ -151,12 +151,12 @@
         <field name="model">public_budget.transaction</field>
         <field name="arch" type="xml">
             <list string="Budget Transaction" decoration-muted="state=='cancelled'" decoration-info="state == 'draft'" decoration-bf="state in ['open', 'closed']" decoration-danger="state in ()">
-                <field name="issue_date" readonly="state == 'draft'"/>
-                <field name="budget_id" readonly="state == 'draft'"/>
-                <field name="name" readonly="state == 'draft'"/>
+                <field name="issue_date" readonly="state != 'draft'"/>
+                <field name="budget_id" readonly="state != 'draft'"/>
+                <field name="name" readonly="state != 'draft'"/>
                 <field name="user_id"/>
-                <field name="expedient_id" readonly="state == 'draft'"/>
-                <field name="type_id" readonly="state == 'draft'"/>
+                <field name="expedient_id" readonly="state != 'draft'"/>
+                <field name="type_id" readonly="state != 'draft'"/>
                 <field name="state"/>
             </list>
         </field>

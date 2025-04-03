@@ -37,7 +37,7 @@
                         <field name="name"/>
                         <field name="type"/>
                         <field name="journal_id"/>
-                        <field name="income_account_id" readonly="state == 'draft'"/>
+                        <field name="income_account_id" readonly="state != 'draft'"/>
                         <field name="budget_position_id"/>
                         <field name="amount"/>
                         <field name="move_id"/>

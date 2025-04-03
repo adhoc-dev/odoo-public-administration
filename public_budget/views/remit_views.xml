@@ -55,7 +55,7 @@
                         <field name="location_id"
                             domain="[('id', 'in', user_location_ids)]"
                             options="{'no_create': True}"
-                            readonly="[(6, False, [])] not in expedient_ids and state == 'in_transit'"/>
+                            readonly="[(6, False, [])] not in expedient_ids and state != 'in_transit'"/>
                         <field name="location_dest_id"
                             domain="[('id','!=',location_id),('expedient_management', '=', True)]"
                             options="{'no_create': True}"

@@ -39,9 +39,9 @@
                         <field name="budget_assignment_allowed"/>
                         <field name="assignment_position_id"/>
                         <field name="company_id" groups="base.group_multi_company"/>
-                        <field name="inventariable" attrs="{'invisible': [('type', '=', 'view')]}"/>
-                        <field name="category_id" attrs="{'invisible': [('type', '=', 'view')], 'required':[('type', '=', 'normal')]}"/>
-                        <field name="child_ids" context="{'budget_id':context.get('budget_id')}" attrs="{'invisible':[('type','!=','view')]}"/>
+                        <field name="inventariable" invisible="type == 'view'"/>
+                        <field name="category_id" invisible="type == 'view'" required="type == 'normal'"/>
+                        <field name="child_ids" context="{'budget_id':context.get('budget_id')}" invisible="type != 'view'"/>
                     </group>
                 </sheet>
 
@@ -57,7 +57,7 @@
             <list string="Budget Position" decoration-info="type=='view'">
                 <field name="code"/>
                 <field name="name"/>
-                <field name="type" invisible="True"/>
+                <field name="type" column_invisible="True"/>
                 <field name="budget_assignment_allowed"/>
             </list>
         </field>
@@ -72,20 +72,20 @@
             <list decoration-info="type=='view'" decoration-success="budget_assignment_allowed" decoration-danger="budget_assignment_allowed and projected_amount > amount">
                 <field name="code"/>
                 <field name="name"/>
-                <field name="type" invisible="1"/>
-                <field name="child_ids" invisible="1"/>
+                <field name="type" column_invisible="True"/>
+                <field name="child_ids" column_invisible="True"/>
                 <field name="amount" sum="Total"/>
                 <field name="preventive_amount" sum="Total"/>
                 <field name="definitive_amount" sum="Total"/>
                 <field name="to_pay_amount" sum="Total"/>
                 <field name="paid_amount" sum="Total"/>
-                <field name="projected_amount" invisible="1"/>
+                <field name="projected_amount" column_invisible="True"/>
                 <!-- A este campo le dejamos el attrs porque lo renderiza igual al widget por mas que el campo tenga valor False -->
                 <!-- <field name="preventive_avg" widget="progressbar" attrs="{'invisible':[('budget_assignment_allowed','=',False)]}"/> -->
-                <field name="preventive_avg" widget="progressbar" attrs="{'invisible':[('budget_assignment_allowed','=',False), ('child_ids','=',[])]}"/>
+                <field name="preventive_avg" widget="progressbar" invisible="not budget_assignment_allowed and not child_ids"/>
                 <field name="balance_amount" sum="Total"/>
-                <field name="budget_assignment_allowed" invisible="1"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="budget_assignment_allowed" column_invisible="True"/>
+                <field name="currency_id" column_invisible="True"/>
             </list>
         </field>
     </record>
@@ -100,7 +100,7 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="budget_assignment_allowed"/>
-                <field name="type" invisible="1"/>
+                <field name="type" column_invisible="True"/>
                 <field name="amount"/>
                 <field name="preventive_amount"/>
                 <field name="definitive_amount"/>
@@ -109,7 +109,7 @@
                 <field name="projected_amount"/>
                 <field name="preventive_avg" widget="integer" string="%"/>
                 <field name="balance_amount"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="True"/>
             </list>
         </field>
     </record>

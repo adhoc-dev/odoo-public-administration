@@ -24,9 +24,9 @@
             <form string="Funding Move">
                 <field name="currency_id" invisible="1"/>
                 <header>
-                    <button name="action_confirm" type="object" states="draft" string="Confirm"/>
-                    <button name="action_cancel_draft" type="object" states="cancel" string="To Draft"/>
-                    <button name="action_cancel" type="object" states="confirmed,draft" string="Cancel" groups="base.group_no_one"/>
+                    <button name="action_confirm" type="object" invisible="state != 'draft'" string="Confirm"/>
+                    <button name="action_cancel_draft" type="object" invisible="state != 'cancel'" string="To Draft"/>
+                    <button name="action_cancel" type="object" invisible="state not in ('confirmed', 'draft')" string="Cancel" groups="base.group_no_one"/>
                     <field name="state" widget="statusbar" statusbar_colors='{}'/>
                 </header>
                 <sheet string="Funding Move">
@@ -61,9 +61,9 @@
                 <field name="journal_id"/>
                 <field name="amount"/>
                 <field name="move_id"/>
-                <field name="budget_id" invisible="'from_budget' in context"/>
+                <field name="budget_id" column_invisible="'from_budget' in context"/>
                 <field name="state"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="True"/>
             </list>
         </field>
     </record>

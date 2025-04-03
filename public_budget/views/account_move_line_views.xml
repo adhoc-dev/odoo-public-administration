@@ -3,7 +3,7 @@
 
 
     <!-- TREEVIEW -->
-    <record id="view_move_line_tree" model="ir.ui.view">
+    <!-- <record id="view_move_line_tree" model="ir.ui.view">
         <field name="name">account.move.line.list.inherit</field>
         <field name="model">account.move.line</field>
         <field name="inherit_id" ref="account_payment_group.view_move_line_tree"/>
@@ -12,6 +12,6 @@
                 <field name="l10n_ar_afip_verification_result"/>
             </field>
         </field>
-    </record>
+    </record> -->
 
 </odoo>

@@ -17,7 +17,7 @@
                 <attribute name="create">false</attribute>
             </list>
             <list position="inside">
-                <button name="action_post" type="object" states="draft" string="Validate" groups="account.group_account_invoice" icon="fa-arrow-right"/>
+                <button name="action_post" type="object" invisible="state != 'draft'" string="Validate" groups="account.group_account_invoice" icon="fa-arrow-right"/>
             </list>
         </field>
     </record>

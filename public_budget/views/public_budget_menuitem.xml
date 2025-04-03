@@ -51,7 +51,7 @@
             name="Adelantos"
             id="menu_advance_requests_main"
             sequence="3"
-            parent="account_accountant.menu_accounting"
+            parent="accountant.menu_accounting"
             />
 
         <menuitem
@@ -424,6 +424,6 @@
             id="menu_funding_moves"
             sequence="5"
             action="action_public_budget_funding_move"
-            parent="account_payment_group.menu_finance_bank_and_cash"
+            parent="account_internal_transfer.menu_finance_bank_and_cash"
             />
 </odoo>

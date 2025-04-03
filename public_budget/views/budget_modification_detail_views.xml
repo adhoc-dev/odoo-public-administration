@@ -50,7 +50,7 @@
             <list string="Budget Modification Detail">
                 <field name="budget_position_id"/>
                 <field name="amount"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="True"/>
             </list>
         </field>
     </record>

@@ -47,7 +47,7 @@
                 <field name="date"/>
                 <field name="from_amount"/>
                 <field name="to_amount"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="True"/>
             </list>
         </field>
     </record>

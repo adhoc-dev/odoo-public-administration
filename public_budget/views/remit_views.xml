@@ -26,16 +26,16 @@
                 <header>
                     <button name="action_confirm"
                         type="object"
-                        states="in_transit"
+                        invisible="state != 'in_transit'"
                         string="Confirm"
                         class="oe_highlight"/>
                     <button name="action_cancel_in_transit"
                         type="object"
-                        states="cancel"
+                        invisible="state != 'cancel'"
                         string="To In Transit"/>
                     <button name="action_cancel"
                         type="object"
-                        states="confirmed,in_transit"
+                        invisible="state not in ('confirmed', 'in_transit')"
                         string="Cancel"
                         groups="base.group_no_one"/>
                     <field name="state" widget="statusbar"

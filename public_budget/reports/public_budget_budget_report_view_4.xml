@@ -78,7 +78,7 @@
                 <field name="invoiced_amount" sum="Total"/>
                 <field name="to_pay_amount" sum="Total"/>
                 <field name="paid_amount" sum="Total"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="True"/>
             </list>
         </field>
     </record>

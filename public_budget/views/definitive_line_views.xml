@@ -62,9 +62,9 @@
                 <field name="invoiced_amount"/>
                 <field name="to_pay_amount" optional="hide"/>
                 <field name="paid_amount" optional="hide"/>
-                <field name="state" invisible="True"/>
-                <field name="currency_id" invisible="1"/>
-                <field name="to_pay_amount" invisible="1"/>
+                <field name="state" column_invisible="True"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="to_pay_amount" column_invisible="True"/>
             </list>
         </field>
     </record>
@@ -82,7 +82,7 @@
                 <field name="budget_position_id"/>
                 <field name="supplier_id" />
                 <field name="residual_amount"/>
-                <field name="state" invisible="1"/>
+                <field name="state" column_invisible="True"/>
             </list>
         </field>
     </record>

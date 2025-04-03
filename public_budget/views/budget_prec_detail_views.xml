@@ -54,7 +54,7 @@
                 <field name="to_pay_amount" sum="Total" />
                 <field name="paid_amount" sum="Total" />
                 <field name="balance_amount" sum="Total" />
-                <field name="account_type" invisible="True" />
+                <field name="account_type" column_invisible="True" />
             </list>
         </field>
     </record>

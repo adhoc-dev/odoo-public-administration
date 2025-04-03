@@ -42,7 +42,7 @@
             <list string="budget_detail">
                 <field name="budget_position_id"/>
                 <field name="initial_amount" sum="Total"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="True"/>
                 <field name="modifications" sum="Total"/>
                 <field name="amount" sum="Total"/>
             </list>

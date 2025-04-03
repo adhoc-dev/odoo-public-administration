@@ -33,7 +33,7 @@
     </record>
 
     <!-- FORMVIEW -->
-    <record id="view_account_asset_asset_form" model="ir.ui.view">
+    <record id="view_account_asset_asset_form_" model="ir.ui.view">
         <field name="name">account.asset.form</field>
         <field name="model">account.asset</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
@@ -45,10 +45,10 @@
                 <field name="transaction_ids" invisible="1"/>
                 <button type="object" name="action_view_transaction" class="oe_stat_button" string="Transactions" icon="fa-list-alt" invisible="state == 'model' or not transaction_ids"/>
             </div>
-            <div name="model_box" position="replace"/>
+            <!-- <div name="model_box" position="replace"/>  no existe mass este div en la padre? no esta el dato?-->
             <xpath expr="//group/group[1]//field[@name='acquisition_date']//.." position="before">
                 <group invisible="state == 'model'">
-                    <field name="model_id" help="Category of asset" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('account_type', '=?', account_type), ('asset_type', '=', asset_type)]"/>
+                    <field name="model_id" help="Category of asset" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('account_type', '=?', account_type), ]"/> <!-- ('asset_type', '=', asset_type) Saco de dom no existe mas el campo, no tiene simil en 18-->
                     <field name="enrollment"/>
                     <field name="reference"/>
                     <field name="serial_number"/>
@@ -82,18 +82,18 @@
             <button name="set_to_draft" position="attributes">
                 <attribute name="groups">public_budget.group_asset_responsable_ubicacion</attribute>
             </button>
-            <button name="action_asset_pause" position="attributes">
+            <button name="action_asset_modify" position="attributes">
                 <attribute name="groups">public_budget.group_asset_responsable_ubicacion</attribute>
             </button>
             <button name="action_save_model" position="attributes">
                 <attribute name="groups">public_budget.group_asset_responsable_ubicacion</attribute>
             </button>
-            <button name="action_asset_modify" position="attributes">
-                <attribute name="groups">base.group_no_one</attribute>
-            </button>
-            <button name="action_set_to_close" position="replace">
+            <!-- <button name="action_asset_modify" position="attributes">  ahora para pauassar o hacer cualquier modiicaicon tenemos un solo widget
+                <attribute name="groups">base.group_no_one</attribute>      Modificamos oara que se limite la visuliacion en el widget
+            </button> -->
+            <!-- <button name="action_set_to_close" position="replace"> esto tambien esta desde asset_modify
                 <button name="archive_and_close_asset" type="object" invisible="not active or state != 'open'" string="Close and Archive" groups="public_budget.group_asset_responsable_ubicacion"/>
-            </button>
+            </button>  -->
             <notebook position="attributes">
                 <attribute name="groups">base.group_no_one</attribute>
             </notebook>
@@ -111,28 +111,29 @@
                 <button name="transfer_asset" type="object" invisible="not visible_button_transfer_asset or transit or state == 'model'" string="Transfer Asset" />
                 <button name="confirm_tranfer" type="object" invisible="not visible_button_transfer_asset or not transit or state == 'model'" string="Confirm Transfer Asset"/>
             </button>
-
             <xpath expr="//field[@name='journal_id']//.." position="attributes">
                 <attribute name="groups">base.group_no_one</attribute>
             </xpath>
             <xpath expr="//group/group//field[@name='gross_increase_value']//.." position="attributes">
                 <attribute name="groups">base.group_no_one</attribute>
             </xpath>
-            <xpath expr="//group//group[6]//field[@name='company_id']"  position="replace"/>
-            <xpath expr="//group/group[3]//field[@name='original_value']" position="replace"/>
-            <xpath expr="//group/group[3]//field[@name='acquisition_date']"  position="replace"/>
+
+            <!-- TODO Los xpaths se esan comportndo de manera extraña revisar -->
+            <!-- <xpath expr="//page[@name='main_page']/group/group[4]/field[@name='company_id']"  position="replace"/>
+            <xpath expr="//page[@name='main_page']/group/group[1]/field[@name='original_value']" position="replace"/>
+            <xpath expr="//page[@name='main_page']/group/group[1]/field[@name='acquisition_date']"  position="replace"/> -->
         </field>
     </record>
 
-    <record id="view_account_asset_asset_form_portal" model="ir.ui.view">
+    <!-- <record id="view_account_asset_asset_form_portal" model="ir.ui.view">
         <field name="name">account.asset.asset.form</field>
         <field name="model">account.asset</field>
-        <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+        <field name="inherit_id" ref="account_asset.view_account_asset_form"/> -->
         <!-- <field name="groups_id" eval="[(4, ref('base.group_portal'))]"/> -->
-        <field name="arch" type="xml">
+        <!-- <field name="arch" type="xml">
             <field name="activity_ids" position="replace"/>
         </field>
-    </record>
+    </record> -->
 
     <record id="view_account_asset_asset_purchase_tree_portal" model="ir.ui.view">
         <field name="name">account.asset.list.portal</field>

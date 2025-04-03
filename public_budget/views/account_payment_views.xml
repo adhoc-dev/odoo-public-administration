@@ -51,9 +51,9 @@
             <field name="name" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-            <field name="name" position="after">
+            <!-- <field name="name" position="after"> sacamos por depreciacion de payment_group
                 <field name="payment_group_id"/>
-            </field>
+            </field> -->
             <field name="partner_id" position="after">
                 <field name="destination_journal_id"/>
             </field>
@@ -77,9 +77,10 @@
                 <button name="change_withholding" icon="fa-undo" type="object" invisible="payment_type != 'outbound' or state != 'posted' or payment_method_code != 'withholding'" confirm="Seguro que desea devolver esta retención?"/>
                 <field name="payment_type" column_invisible="True"/>
             </list>
+            <!-- TODO No est mas el boton lo agregamos otr vez?
             <button name="%(l10n_ar_tax.action_report_withholding_certificate)d" position="attributes">
                 <attribute name="invisible">1</attribute>
-            </button>
+            </button> -->
         </field>
     </record>
 

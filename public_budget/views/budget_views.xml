@@ -59,13 +59,13 @@
                     </group>
                     <notebook>
                         <page string="Analysis">
-                            <field name="parent_budget_position_ids" context="{'budget_id':active_id, 'list_view_ref': 'public_budget.view_budget_position_budget_tree'}"/>
+                            <field name="parent_budget_position_ids" context="{'budget_id':id, 'list_view_ref': 'public_budget.view_budget_position_budget_tree'}"  groups="account.group_account_user"/>
                         </page>
                         <page string="Detail">
-                            <field name="budget_detail_ids" context="{'budget_id':active_id}"/>
+                            <field name="budget_detail_ids" context="{'budget_id':id}"/>
                         </page>
                         <page string="Moves">
-                            <field name="budget_modification_ids" context="{'budget_id':active_id}"/>
+                            <field name="budget_modification_ids" context="{'budget_id':id}"/>
                         </page>
                         <page string="Funding Moves">
                             <field name="funding_move_ids"/>

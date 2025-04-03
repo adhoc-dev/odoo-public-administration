@@ -29,8 +29,8 @@
     ],
     'data': [
         'security/public_budget_group.xml',
-        # 'security/ir.model.access.csv',
-        # 'security/public_budget_security.xml',
+        'security/ir.model.access.csv',
+        'security/public_budget_security.xml',
         'security/hide_groups.xml',
         'wizards/transaction_definitive_make_invoice_views.xml',
         'wizards/transaction_definitive_mass_invoice_create_views.xml',

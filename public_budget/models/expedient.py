@@ -287,13 +287,15 @@ class PublicBudgetExpedient(models.Model):
         self.write({'state': 'cancel'})
         return True
 
-    def _compute_display_name(self):
+    def name_get(self):
+        result = []
         for rec in self:
             if len(rec.cover) > 200:
-                rec.display_name = "%s - %s..." % (rec.number, rec.cover[:200])
+                result.display_name = "%s - %s..." % (rec.number, rec.cover[:200])
             else:
                 result.append(
                     (rec.id, "%s - %s" % (rec.number, rec.cover)))
+        return result
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):

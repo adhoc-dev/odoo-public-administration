@@ -29,7 +29,7 @@
     </record>
 
     <!-- FORMVIEW -->
-    <record id="view_public_budget_expedient_form" model="ir.ui.view">
+    <record id="view_public_budget_expedient_form_" model="ir.ui.view">
         <field name="name">public_budget.expedient.form</field>
         <field name="model">public_budget.expedient</field>
         <field name="arch" type="xml">
@@ -44,7 +44,7 @@
                 </header>
                 <sheet string="Expedient">
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="%(action_public_budget_transaction_transactions)d" string="Transactions" type="action" groups="public_budget.group_portal_transaction,public_budget.group_secretary_director,account.group_account_user" context="{'search_default_expedient_id': active_id}" icon="fa-bars"/>
+                        <button class="oe_stat_button" name="%(action_public_budget_transaction_transactions)d" string="Transactions" type="action" groups="public_budget.group_portal_transaction,public_budget.group_secretary_director,account.group_account_user" context="{'search_default_expedient_id': id}" icon="fa-bars"/>
                     </div>
                     <field name="user_location_ids" invisible="1"/>
                     <field name="id" invisible="1"/>
@@ -99,21 +99,21 @@
         </field>
     </record>
 
-    <record id="view_public_budget_expedient_portal_form" model="ir.ui.view">
+    <!-- <record id="view_public_budget_expedient_portal_form" model="ir.ui.view">
         <field name="name">public_budget.expedient.portal.form</field>
         <field name="model">public_budget.expedient</field>
-        <field name="inherit_id" ref="view_public_budget_expedient_form"/>
+        <field name="inherit_id" ref="view_public_budget_expedient_form"/>-->
         <!-- <field name="groups_id" eval="[(4, ref('base.group_portal'))]"/> -->
-        <field name="arch" type="xml">
+       <!-- <field name="arch" type="xml">
             <field name="activity_ids" position="replace"/>
         </field>
-    </record>
+    </record> -->
 
 
     <record id="view_public_budget_expedient_form2" model="ir.ui.view">
         <field name="name">public_budget.expedient.form.inherit</field>
         <field name="model">public_budget.expedient</field>
-        <field name="inherit_id" ref="view_public_budget_expedient_form"/>
+        <field name="inherit_id" ref="view_public_budget_expedient_form_"/>
         <!-- <field name="groups_id" eval="[(4, ref('group_portal_expedient')),(4, ref('group_secretary_usuario')),(4, ref('account.group_account_user')),(4, ref('group_habilitacion_usuario'))]"/> -->
         <field name="arch" type="xml">
             <form position="attributes">

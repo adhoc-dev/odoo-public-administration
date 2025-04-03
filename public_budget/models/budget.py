@@ -24,13 +24,13 @@ class Budget(models.Model):
     name = fields.Char(
         readonly=True,
         required=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     fiscalyear = fields.Char(
         required=True,
         default=time.strftime('%Y'),
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     # TODO rename a default_income_account_id?
     # la dejamos por compatibilidad con CMR
@@ -39,7 +39,7 @@ class Budget(models.Model):
         string='Default Income Account',
         readonly=True,
         # required=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         domain="[('internal_type', '=', 'other'), "
         "('company_id', '=', company_id), "
         "('deprecated', '=', False)]",
@@ -49,7 +49,7 @@ class Budget(models.Model):
         'public_budget.expedient',
         readonly=True,
         required=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     prec_passive_residue = fields.Monetary(
         string='Pre Close Passive Residue',
@@ -99,7 +99,7 @@ class Budget(models.Model):
         string='Company',
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default=lambda self: self.env.company.id
     )
     currency_id = fields.Many2one(
@@ -113,14 +113,14 @@ class Budget(models.Model):
         'public_budget.budget_modification',
         'budget_id',
         readonly=True,
-        states={'draft': [('readonly', False)], 'open': [('readonly', False)]},
+        # states={'draft': [('readonly', False)], 'open': [('readonly', False)]},
         domain=[('initial_approval', '=', False)]
     )
     budget_detail_ids = fields.One2many(
         'public_budget.budget_detail',
         'budget_id',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     budget_prec_detail_ids = fields.One2many(
         'public_budget.budget_prec_detail',
@@ -131,9 +131,9 @@ class Budget(models.Model):
         'public_budget.funding_move',
         'budget_id',
         readonly=True,
-        states={
-            'open': [('readonly', False)],
-            'pre_closed': [('readonly', False)]},
+        # states={
+        #     'open': [('readonly', False)],
+        #     'pre_closed': [('readonly', False)]},
         context={'from_budget': True}
     )
     transaction_ids = fields.One2many(
@@ -144,7 +144,7 @@ class Budget(models.Model):
         'account.payment.receiptbook',
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         domain="[('partner_type', '=', 'supplier'), "
         "('company_id', '=', company_id)]",
     )

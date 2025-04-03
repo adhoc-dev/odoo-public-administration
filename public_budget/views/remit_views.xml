@@ -51,19 +51,21 @@
                    </div>
                  <group>
                     <group>
-                        <field name="date"/> 
+                        <field name="date"/>
                         <field name="location_id"
                             domain="[('id', 'in', user_location_ids)]"
                             options="{'no_create': True}"
-                            atts="{'readonly': [('expedient_ids', '!=', [(6, False, [])])]}"/>
+                            readonly="[(6, False, [])] not in expedient_ids and state == 'in_transit'"/>
                         <field name="location_dest_id"
-                            domain="[('id','!=',location_id),('expedient_management', '=', True)]" options="{'no_create': True}"/> 
-                        <field name="reference"/> 
+                            domain="[('id','!=',location_id),('expedient_management', '=', True)]"
+                            options="{'no_create': True}"
+                            readonly="state == 'readonly'"/>
+                        <field name="reference"/>
                     </group>
                     <group>
-                        <field name="user_id"/> 
-                        <field name="confirmation_user_id"/> 
-                        <field name="confirmation_date"/> 
+                        <field name="user_id"/>
+                        <field name="confirmation_user_id"/>
+                        <field name="confirmation_date"/>
                     </group>
                  </group>
                     <field name="expedient_ids"

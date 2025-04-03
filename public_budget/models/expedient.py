@@ -146,7 +146,7 @@ class PublicBudgetExpedient(models.Model):
         'expedient_id',
         'remit_id',
         readonly=True,
-        states={'in_transit': [('readonly', False)]}
+        # states={'in_transit': [('readonly', False)]}
     )
     parliamentary_expedient = fields.Char(
         string='Expediente Parlamentario'

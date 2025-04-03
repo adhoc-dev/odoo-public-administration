@@ -22,31 +22,31 @@ class AdvanceRequest(models.Model):
     name = fields.Char(
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     company_id = fields.Many2one(
         'res.company',
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default=lambda self: self.env['res.company']._company_default_get(
             'public_budget.advance_request')
     )
     date = fields.Date(
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default=fields.Date.context_today,
         copy=False,
     )
     approval_date = fields.Date(
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         copy=False,
     )
     confirmation_date = fields.Date(
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         copy=False,
     )
     user_id = fields.Many2one(
@@ -54,14 +54,14 @@ class AdvanceRequest(models.Model):
         required=True,
         readonly=True,
         default=lambda self: self.env.user,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     type_id = fields.Many2one(
         'public_budget.advance_request_type',
         required=True,
         readonly=True,
         domain="[('company_id', '=', company_id)]",
-        states={'draft': [('readonly', False)]},
+        #states={'draft': [('readonly', False)]},
     )
     state = fields.Selection(
         _states_,
@@ -73,7 +73,7 @@ class AdvanceRequest(models.Model):
         'advance_request_id',
         string='Lines',
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     payment_ids = fields.One2many(
         'account.payment',

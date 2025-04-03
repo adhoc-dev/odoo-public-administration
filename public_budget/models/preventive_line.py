@@ -13,7 +13,7 @@ class PreventiveLine(models.Model):
     account_id = fields.Many2one(
         'account.account',
         string='Account',
-        states={'invoiced': [('readonly', True)]},
+        # states={'invoiced': [('readonly', True)]},
         # TODO Revisar dominio de internal type y compnay_id
         # domain="["
         # "('internal_type', '=', 'other'), "
@@ -34,7 +34,7 @@ class PreventiveLine(models.Model):
     preventive_amount = fields.Monetary(
         string='Preventive',
         required=True,
-        states={'closed': [('readonly', True)]}
+        # states={'closed': [('readonly', True)]}
     )
     advance_line = fields.Boolean(
         string='Advance Line?',
@@ -108,7 +108,7 @@ class PreventiveLine(models.Model):
         'public_budget.budget_position',
         string='Budget Position',
         required=True,
-        states={'invoiced': [('readonly', True)]},
+        # states={'invoiced': [('readonly', True)]},
         context={'default_type': 'normal'},
         domain=[('type', '=', 'normal')],
         auto_join=True,

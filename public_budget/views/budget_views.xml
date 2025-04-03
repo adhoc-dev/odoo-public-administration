@@ -42,11 +42,11 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="fiscalyear"/>
-                            <field name="receiptbook_id"/>
-                            <field name="expedient_id"/>
-                            <field name="income_account_id"/>
+                            <field name="name" readonly="state == 'draft'"/>
+                            <field name="fiscalyear" readonly="state == 'draft'"/>
+                            <field name="receiptbook_id" readonly="state == 'draft'"/>
+                            <field name="expedient_id" readonly="state == 'draft'"/>
+                            <field name="income_account_id" readonly="state == 'draft'"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group name="totals">
@@ -62,13 +62,13 @@
                             <field name="parent_budget_position_ids" context="{'budget_id':id, 'list_view_ref': 'public_budget.view_budget_position_budget_tree'}"  groups="account.group_account_user"/>
                         </page>
                         <page string="Detail">
-                            <field name="budget_detail_ids" context="{'budget_id':id}"/>
+                            <field name="budget_detail_ids" context="{'budget_id':id}" readonly="state == 'draft'"/>
                         </page>
                         <page string="Moves">
-                            <field name="budget_modification_ids" context="{'budget_id':id}"/>
+                            <field name="budget_modification_ids" context="{'budget_id':id}" readonly="state == 'draft'"/>
                         </page>
                         <page string="Funding Moves">
-                            <field name="funding_move_ids"/>
+                            <field name="funding_move_ids" readonly="state in ['open', 'pre_closed']"/>
                         </page>
                         <page string="Pre Close Detail" invisible="state not in ['pre_closed', 'closed']">
                             <group col="4">
@@ -111,10 +111,10 @@
         <field name="model">public_budget.budget</field>
         <field name="arch" type="xml">
             <list string="Budget" decoration-muted="state=='cancelled'" decoration-info="state =='draft'" decoration-bf="state in ['pre_closed', 'open', 'closed']" decoration-danger="state in ()">
-                <field name="name"/>
+                <field name="name" readonly="state == 'draft'"/>
                 <!-- <field name="fiscalyear_id"/> -->
-                <field name="income_account_id"/>
-                <field name="expedient_id"/>
+                <field name="income_account_id" readonly="state == 'draft'"/>
+                <field name="expedient_id" readonly="state == 'draft'"/>
                 <field name="state"/>
             </list>
         </field>

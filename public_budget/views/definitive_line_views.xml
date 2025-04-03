@@ -9,10 +9,10 @@
                 <field name="expedient_id"/>
                 <field name="transaction_id"/>
                 <field name="budget_position_id"/>
-                <field name="supplier_id"/>
+                <field name="supplier_id" readonly="state == 'draft'"/>
                 <field name="budget_id"/>
-                <field name="issue_date"/>
-                <field name="amount"/>
+                <field name="issue_date" readonly="state == 'draft'"/>
+                <field name="amount" readonly="state == 'draft'"/>
                 <group expand="0" string="Group By">
                     <filter name="Expedient" string="Expedient" domain="[]" context="{'group_by':'expedient_id'}"/>
                     <filter name="Transaction" string="Transaction" domain="[]" context="{'group_by':'transaction_id'}"/>
@@ -39,9 +39,9 @@
                     <div class="oe_button_box" name="buttons">
                     </div>
                     <group>
-                        <field name="issue_date"/>
-                        <field name="supplier_id"/>
-                        <field name="amount"/>
+                        <field name="issue_date" readonly="state == 'draft'"/>
+                        <field name="supplier_id" readonly="state == 'draft'"/>
+                        <field name="amount" readonly="state == 'draft'"/>
                         <field name="to_pay_amount" invisible="1"/>
                     </group>
                 </sheet>

@@ -26,7 +26,7 @@ class AccountPayment(models.Model):
         'res.partner',
         'Cesionario',
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     return_payment_id = fields.Many2one(
         'account.payment',

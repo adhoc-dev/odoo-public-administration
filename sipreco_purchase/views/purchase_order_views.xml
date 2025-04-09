@@ -46,7 +46,7 @@
                 <attribute name="groups">purchase.group_purchase_user</attribute>
             </button>
             <field name="requisition_id" position="after">
-                <field name="expedient_id" readonly="1" attrs="{'invisible':[('expedient_id', '=', False)]}"/>
+                <field name="expedient_id" readonly="1" invisible="not expedient_id"/>
             </field>
         </field>
     </record>

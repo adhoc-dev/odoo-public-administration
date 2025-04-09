@@ -43,7 +43,7 @@
         <field name="arch" type="xml">
             <list>
                 <!-- por ahora usamos metodo distinto para cambio de retenciones y de cheque, pero la idea sería implementar el mismo metodos -->
-                <button name="change_withholding" icon="fa-undo" type="object" invisible="payment_type != 'outbound' or state != 'posted' or payment_method_code != 'withholding'" confirm="Seguro que desea devolver esta retención?"/>
+                <button name="change_withholding" icon="fa-undo" type="object" invisible="payment_type != 'outbound' or state != 'posted' or payment_method_code != 'withholding'" confirm="Seguro que desea devolver esta retención?" title="Change"/>
                 <field name="payment_type" column_invisible="True"/>
             </list>
 
@@ -74,7 +74,7 @@
             <list>
                 <field name="return_payment_id" column_invisible="True"/>
                 <!-- por ahora usamos metodo distinto para cambio de retenciones y de cheque, pero la idea sería implementar el mismo metodos -->
-                <button name="change_withholding" icon="fa-undo" type="object" invisible="payment_type != 'outbound' or state != 'posted' or payment_method_code != 'withholding'" confirm="Seguro que desea devolver esta retención?"/>
+                <button name="change_withholding" icon="fa-undo" type="object" invisible="payment_type != 'outbound' or state != 'posted' or payment_method_code != 'withholding'" confirm="Seguro que desea devolver esta retención?" title="Change"/>
                 <field name="payment_type" column_invisible="True"/>
             </list>
             <!-- TODO No est mas el boton lo agregamos otr vez?

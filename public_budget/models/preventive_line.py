@@ -73,12 +73,12 @@ class PreventiveLine(models.Model):
     )
     state = fields.Selection(
         selection=[
-            ('draft', _('Draft')),
-            ('open', _('Open')),
-            ('definitive', _('Definitive')),
-            ('invoiced', _('Invoiced')),
-            ('closed', _('Closed')),
-            ('cancel', _('Cancel'))],
+            ('draft', 'Draft'),
+            ('open', 'Open'),
+            ('definitive', 'Definitive'),
+            ('invoiced', 'Invoiced'),
+            ('closed', 'Closed'),
+            ('cancel', 'Cancel')],
         compute='_compute_state',
         store=True,
     )

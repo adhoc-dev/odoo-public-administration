@@ -33,7 +33,7 @@
     </record>
 
     <!-- FORMVIEW -->
-    <record id="view_account_asset_asset_form_" model="ir.ui.view">
+    <record id="view_account_asset_asset_form" model="ir.ui.view">
         <field name="name">account.asset.form</field>
         <field name="model">account.asset</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
@@ -45,25 +45,24 @@
                 <field name="transaction_ids" invisible="1"/>
                 <button type="object" name="action_view_transaction" class="oe_stat_button" string="Transactions" icon="fa-list-alt" invisible="state == 'model' or not transaction_ids"/>
             </div>
-            <!-- <div name="model_box" position="replace"/>  no existe mass este div en la padre? no esta el dato?-->
-            <xpath expr="//group/group[1]//field[@name='acquisition_date']//.." position="before">
-                <group invisible="state == 'model'">
-                    <field name="model_id" help="Category of asset" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('account_type', '=?', account_type), ]"/> <!-- ('asset_type', '=', asset_type) Saco de dom no existe mas el campo, no tiene simil en 18-->
-                    <field name="enrollment"/>
-                    <field name="reference"/>
-                    <field name="serial_number"/>
-                    <field name="asset_state" required="state != 'model'"/>
-                    <field name="observations"/>
-                    <field name="level"/>
-                    <field name="number"/>
-                    <field name="building"/>
-                    <field name="location_id" readonly="location_id and state in ['open', 'paid']" required="state != 'model'" force_save="1" options="{'no_create': True}"/>
-                    <field name="expedient_id" required="state != 'model'" options="{'no_create': True}"/>
-                    <field name="user_id"/>
-                    <field name="transit"/>
+            <group>
+                <group>
+                    <group invisible="state == 'model'">
+                        <field name="model_id" help="Category of asset" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('account_type', '=?', account_type), ]"/> <!-- ('asset_type', '=', asset_type) Saco de dom no existe mas el campo, no tiene simil en 18-->
+                        <field name="enrollment"/>
+                        <field name="reference"/>
+                        <field name="serial_number"/>
+                        <field name="asset_state" required="state != 'model'"/>
+                        <field name="observations"/>
+                        <field name="level"/>
+                        <field name="number"/>
+                        <field name="building"/>
+                        <field name="location_id" readonly="location_id and state in ['open', 'paid']" required="state != 'model'" force_save="1" options="{'no_create': True}"/>
+                        <field name="expedient_id" required="state != 'model'" options="{'no_create': True}"/>
+                        <field name="user_id"/>
+                        <field name="transit"/>
+                    </group>
                 </group>
-            </xpath>
-            <xpath expr="//group/group[1]" position="after">
                 <group string="Extra Options" invisible="state == 'model'">
                     <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                     <field name="original_value" invisible="state == 'model'" readonly="state != 'draft' or original_move_line_ids"/>
@@ -74,7 +73,7 @@
                     <field name="patrimonial" invisible="state == 'model'"/>
                     <field name="reportable" invisible="state == 'model'"/>
                 </group>
-            </xpath>
+            </group>
             <button name="compute_depreciation_board" position="attributes">
                 <attribute name="states"></attribute>
                 <attribute name="groups">base.group_no_one</attribute>

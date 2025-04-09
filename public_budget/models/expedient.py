@@ -7,7 +7,7 @@ class PublicBudgetExpedient(models.Model):
     _name = 'public_budget.expedient'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Expedient'
-    _rec_name = 'number'
+    _rec_names_search = ['cover', 'number']
 
     _order = "id desc"
 
@@ -287,26 +287,13 @@ class PublicBudgetExpedient(models.Model):
         self.write({'state': 'cancel'})
         return True
 
-    def name_get(self):
-        result = []
+    @api.depends('number', 'cover')
+    def _compute_display_name(self):
         for rec in self:
             if len(rec.cover) > 200:
-                result.display_name = "%s - %s..." % (rec.number, rec.cover[:200])
+                rec.display_name = "%s - %s..." % (rec.number, rec.cover[:200])
             else:
-                result.append(
-                    (rec.id, "%s - %s" % (rec.number, rec.cover)))
-        return result
-
-    @api.model
-    def name_search(self, name, args=None, operator='ilike', limit=100):
-        args = args or []
-        recs = self.browse()
-        if name:
-            recs = self.search(
-                [('number', operator, name)] + args, limit=limit)
-        if not recs:
-            recs = self.search([('cover', operator, name)] + args, limit=limit)
-        return recs.name_get()
+                rec.display_name = "%s - %s" % (rec.number, rec.cover)
 
     @api.model
     def create(self, vals):

@@ -57,7 +57,7 @@ class AdvanceReturn(models.Model):
         required=True,
         readonly=True,
         domain="[('company_id', '=', company_id)]",
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     move_id = fields.Many2one(
         'account.move',

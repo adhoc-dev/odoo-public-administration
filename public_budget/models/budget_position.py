@@ -10,7 +10,7 @@ class BudgetPosition(models.Model):
     _name = 'public_budget.budget_position'
     _description = 'Budget Position'
     _parent_store = True
-    _rec_name = 'code'
+    _rec_names_search = ['name', 'code']
 
     _order = "code"
 
@@ -252,18 +252,7 @@ class BudgetPosition(models.Model):
 
     def _compute_display_name(self):
         for rec in self:
-            result.append(
-                (rec.id, "%s - %s" % (rec.code, rec.name)))
-
-    @api.model
-    def name_search(self, name, args=None, operator='ilike', limit=100):
-        args = args or []
-        recs = self.browse()
-        if name:
-            recs = self.search([('code', operator, name)] + args, limit=limit)
-        if not recs:
-            recs = self.search([('name', operator, name)] + args, limit=limit)
-        return recs.name_get()
+            rec.display_name = "%s - %s" % (rec.code, rec.name)
 
     @api.constrains('child_ids', 'type', 'parent_id')
     def _check_type(self):

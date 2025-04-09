@@ -31,7 +31,7 @@ class AccountPayment(models.Model):
     expedient_id = fields.Many2one(
         'public_budget.expedient',
         context={'default_type': 'payment'},
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         ondelete='restrict',
     )
     transaction_id = fields.Many2one(
@@ -74,19 +74,19 @@ class AccountPayment(models.Model):
         readonly=True,
         # nos pidieron que no haya valor por defecto
         # default=fields.Date.context_today,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         help='Date used to calculate payment date',
     )
     payment_days = fields.Integer(
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         help='Days added to payment base date to get the payment date',
     )
     days_interval_type = fields.Selection([
         ('business_days', 'Business Days'),
         ('calendar_days', 'Calendar Days')],
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default='business_days',
     )
     payment_min_date = fields.Date(
@@ -98,16 +98,16 @@ class AccountPayment(models.Model):
     confirmation_date = fields.Date(
         'Fecha de Confirmación',
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         copy=False,
     )
     to_signature_date = fields.Date(
         'Fecha a Proceso de Firma',
         help='Fecha en la que fue pasado a proceso de firma. Utilizada para '
         'acumular retenciones.',
-        states={
-            'draft': [('readonly', False)],
-            'confirmed': [('readonly', False)]},
+        # states={
+        #     'draft': [('readonly', False)],
+        #     'confirmed': [('readonly', False)]},
         readonly=True,
         copy=False,
     )
@@ -115,12 +115,12 @@ class AccountPayment(models.Model):
         required=False,
         # al final, para evitar que la seteen equivocadamente, la dejamos
         # editable solo en isgnature y signed
-        states={
-            # 'draft': [('readonly', False)],
-            # 'confirmed': [('readonly', False)],
-            'signature_process': [('readonly', False)],
-            'signed': [('readonly', False)],
-        },
+        # states={
+        #     # 'draft': [('readonly', False)],
+        #     # 'confirmed': [('readonly', False)],
+        #     'signature_process': [('readonly', False)],
+        #     'signed': [('readonly', False)],
+        # },
     )
     # TODO implementar
     # paid_withholding_ids = fields.Many2many(
@@ -171,7 +171,7 @@ class AccountPayment(models.Model):
                 raise ValidationError(_(
                     'No puede validar un pago si el expediente no está en '
                     'una ubicación autorizada para ústed'))
-        return super(AccountPaymentGroup, self.with_context(is_recipt=True)).post()
+        return super(AccountPayment, self.with_context(is_recipt=True)).post()
 
     # las seteamos directamente al postear total antes no se usan
     # @api.constrains('payment_date')

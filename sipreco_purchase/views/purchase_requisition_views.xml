@@ -206,7 +206,7 @@
             <field name="date_end" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
-            <field name="ordering_date" position="replace">
+            <field name="date_start" position="replace">
                 <field name="expedient_id"/>
             </field>
         </field>

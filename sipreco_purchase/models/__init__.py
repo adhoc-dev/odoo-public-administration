@@ -8,7 +8,7 @@ from . import purchase_order_line
 from . import purchase_requisition
 from . import purchase_requisition_line
 from . import res_users
-# from . import stock_location_route
+from . import stock_route
 from . import product_product
 from . import transaction
 from . import expedient

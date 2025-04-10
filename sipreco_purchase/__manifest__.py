@@ -26,7 +26,7 @@
         'views/stock_request_order_views.xml',
         'views/stock_request_views.xml',
         'views/res_users_views.xml',
-        #'views/stock_location_route_views.xml',
+        'views/stock_location_route_views.xml',
         'views/product_template_views.xml',
         'views/purchase_order_views.xml',
         'views/transaction_views.xml',

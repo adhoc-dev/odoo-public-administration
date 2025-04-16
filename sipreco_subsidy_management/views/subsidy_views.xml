@@ -50,9 +50,9 @@
                         <page string="Renditions">
                             <field name="rendition_ids" context="{'default_expedient_id': accountability_administrative_expedient_id, 'default_rendition_amount': pendientes_rendicion_amount}">
                                 <list editable="bottom">
-                                    <field name="date" attrs="{'readonly': [('editable_line','=',True)]}"/>
-                                    <field name="expedient_id" attrs="{'readonly': [('editable_line','=',True)]}"/>
-                                    <field name="rendition_amount" sum="Total" attrs="{'readonly': [('editable_line','=',True)]}"/>
+                                    <field name="date" readonly="editable_line"/>
+                                    <field name="expedient_id" readonly="editable_line"/>
+                                    <field name="rendition_amount" sum="Total" readonly="editable_line"/>
                                     <!-- nos da error al pasar este default por contexto -->
                                     <!-- context="{'default_approved_amount': rendition_amount} -->
                                     <!-- <field name="approval_arrangement_ids" widget="one2many_tags">
@@ -67,12 +67,12 @@
                                             </group>
                                         </form>
                                     </field> -->
-                                    <field name="approval_arrangement_id" options="{'create': True, 'create_edit': True}" context="{'default_approved_amount': rendition_amount}" attrs="{'readonly': [('editable_line','=',True)]}"/>
+                                    <field name="approval_arrangement_id" options="{'create': True, 'create_edit': True}" context="{'default_approved_amount': rendition_amount}" readonly="editable_line"/>
                                     <button name="%(action_aeroo_subsidy_approval_arrangement_report)d" title="Print" icon="fa-print" type="action"/>
                                     <field name="editable_line" readonly="1"/>
                                     <field name="approved_amount" sum="Total"/>
                                     <field name="pending_amount" sum="Total"/>
-                                    <field name="currency_id" invisible="1"/>
+                                    <field name="currency_id" column_invisible="True"/>
                                 </list>
                             </field>
                         </page>
@@ -107,7 +107,7 @@
         <field name="name">public_budget.subsidy.form.inherit</field>
         <field name="model">public_budget.subsidy</field>
         <field name="inherit_id" ref="view_public_budget_subsidy_form"/>
-        <field name="groups_id" eval="[(6, 0, [ref('account.group_account_manager')])]" />
+        <!-- <field name="groups_id" eval="[(6, 0, [ref('account.group_account_manager')])]" /> -->
         <field name="arch" type="xml">
             <field name="editable_line" position="attributes">
                 <attribute name="readonly">0</attribute>

@@ -94,7 +94,7 @@
                                 <field name="accountability_expiry_date"/>
                                 <!-- <field name="accountability_overcome"/> -->
                             </group>
-                            <field name="advance_payment_group_ids" context="{'default_transaction_id':id, 'default_partner_id': partner_id, 'default_partner_type': 'supplier'}"/>
+                            <field name="advance_payment_ids" context="{'default_transaction_id':id, 'default_partner_id': partner_id, 'default_partner_type': 'supplier'}"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -125,7 +125,7 @@
                 <field name="reclaimed"/>
                 <field name="parliamentary_resolution_date"/>
                 <field name="partner_id" string="Beneficiary"/>
-                <field name="amount" string="Importe s/Res"/>
+                <field name="amount" string="Importe s/Res" readonly="state == 'closed'"/>
                 <field name="cargo_amount" sum="Total"/>
                 <field name="rendido_amount" sum="Total"/>
                 <field name="aprobado_amount" sum="Total"/>

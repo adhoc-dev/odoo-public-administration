@@ -221,9 +221,9 @@ class PublicBudgetSubsidy(models.Model):
         # TODO chequear si hace falta esto o no
         'advance_payment_ids.state',
         'advance_payment_ids.payment_date',
-        'advance_payment_ids.payments_amount',
-        'advance_payment_ids.cargo_date',
-        'advance_payment_ids.cargo_amount',
+        'advance_payment_ids.amount',
+        # 'advance_payment_ids.cargo_date',
+        # 'advance_payment_ids.cargo_amount',
     )
     def _compute_cargo_data(self):
         for rec in self:

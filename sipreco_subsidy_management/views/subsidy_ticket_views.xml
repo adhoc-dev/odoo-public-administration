@@ -37,7 +37,7 @@
     </record>
 
     <record id="subsidy_ticket_view_tree" model="ir.ui.view">
-        <field name="name">subsidy.ticket.tree</field>
+        <field name="name">subsidy.ticket.list</field>
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
         <field name="arch" type="xml">

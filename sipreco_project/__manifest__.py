@@ -10,7 +10,7 @@
     'images': [
     ],
     'depends': [
-        'web_m2x_options',
+        #'web_m2x_options',
         'public_budget',
         'account_accountant',
         'l10n_ar_bank',
@@ -29,8 +29,9 @@
     ],
     'demo': [
         'demo/config_data.xml',
-        'demo/load_es_lang.xml',
+        # 'demo/load_es_lang.xml',
     ],
+    'post_init_hook': 'post_init_set_lang',
     'installable': True,
     'auto_install': False,
     'application': True,

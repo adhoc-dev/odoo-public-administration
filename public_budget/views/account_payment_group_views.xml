@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record model="ir.ui.view" id="view_account_payment_group_search">
-        <field name="name">account.payment.group.filter</field>
-        <field name="model">account.payment.group</field>
-        <field name="inherit_id" ref="account_payment_group.view_account_payment_group_search"/>
+    <record model="ir.ui.view" id="view_account_payment_search">
+        <field name="name">account.payment.filter</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_search"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <filter name='state_draft' position="after">
-                <filter string="En Proceso de Firma" domain="[('state','=','signature_process')]" name='state_draft'/>
-                <filter string="Firmado" domain="[('state','=','signed')]" name='state_draft'/>
+                <filter string="En Proceso de Firma" domain="[('state','=','signature_process')]" name='state_signature_process'/>
+                <filter string="Firmado" domain="[('state','=','signed')]" name='state_signed'/>
             </filter>
-            <field name="display_name" position="attributes">
-                <attribute name="filter_domain">['|', '|', ('reference','ilike',self), ('name','ilike',self), ('communication','ilike',self)]</attribute>
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">['|', '|', '|', '|', '|', ('reference','ilike',self), ('name', 'ilike', self), ('partner_id', 'ilike', self), ('memo', 'ilike', self), ('amount_company_currency_signed' , 'ilike', self), ('amount', 'ilike', self)]</attribute>
             </field>
-            <field name="display_name" position="after">
+            <field name="name" position="after">
                 <field name="transaction_id"/>
                 <field name="budget_id"/>
                 <field name="expedient_id"/>
                 <field name="budget_position_ids"/>
             </field>
-            <filter context="{'group_by': 'state'}" position="after">
+            <filter name="state" position="after">
                 <filter name="fecha_pago" string="Fecha Min. de Pago" domain="[]" context="{'group_by': 'payment_min_date'}"/>
             </filter>
         </field>
     </record>
 
     <!-- list view modification -->
-    <record id="view_account_payment_group_tree" model="ir.ui.view">
-        <field name="name">account.payment.group.pay.list</field>
-        <field name="model">account.payment.group</field>
-        <field name="inherit_id" ref="account_payment_group.view_account_payment_group_tree"/>
+    <record id="view_account_supplier_payment_tree" model="ir.ui.view">
+        <field name="name">account.payment.pay.list</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <!-- para que solo se puedan crear con el botón -->
             <list position="attributes">
                 <attribute name="create">false</attribute>
             </list>
-            <field name="payment_date" position="after">
+            <field name="date" position="after">
                 <field name="payment_min_date"/>
             </field>
-            <field name="payment_methods" position="attributes">
+            <field name="payment_method_line_id" position="attributes">
                 <attribute name="optional">hide</attribute>
             </field>
-            <field name="payment_date" position="attributes">
+            <field name="date" position="attributes">
                 <attribute name="optional">hide</attribute>
             </field>
 
             <!-- para poder ver lo que se manda a pagar antes de que se carguen los pagos -->
-            <field name="payments_amount" position="before">
+            <field name="payment_total" position="before">
                 <field name="to_pay_amount" sum="Total"/>
             </field>
             <field name="partner_id" position="before">
                 <field name="reference"/>
-                <field name="communication" optional="hide"/>
+                <field name="memo" optional="hide"/>
             </field>
             <list position="inside">
                 <button name="confirm" type="object" string="Confirm" attrs="{'invisible': [('state','!=', 'draft')]}" icon="fa-arrow-circle-right" groups="account.group_account_manager"/>
@@ -61,21 +61,16 @@
         </field>
     </record>
 
-    <record id="view_account_payment_group_form" model="ir.ui.view">
-        <field name="name">account.payment.group.form</field>
-        <field name="model">account.payment.group</field>
+    <record id="view_account_payment_form" model="ir.ui.view">
+        <field name="name">account.payment.form</field>
+        <field name="model">account.payment</field>
         <field name="priority">20</field>
-        <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
             <!-- en sipreco, para el pago de retenciones no queremos pasar por todo el circuito de doble confirmación), ademas no queremos que usen talonario de ordenes de pago y es medio complicado generar otro talonario exclsuivo para esto y pasarlo por defecto, entonces hacemos que talonario y numero de docuemnto sean solo requeridos si es pago de transacción o de adelantos -->
             <field name="receiptbook_id" position="attributes">
                 <attribute name="attrs">{'invisible': [('transaction_id', '=', False), ('advance_request_id', '=', False)], 'required':['|', ('transaction_id', '!=', False), ('advance_request_id', '!=', False)]}</attribute>
             </field>
-            <field name="document_number" position="attributes">
-                <attribute name="attrs"></attribute>
-                <attribute name="invisible">1</attribute>
-            </field>
-
 
             <button name="action_payment_sent" position="attributes">
                 <attribute name="attrs">{'invisible':[('state', 'not in', ['posted', 'signed'])]}</attribute>
@@ -108,7 +103,7 @@
                 <attribute name="groups">account.group_account_manager</attribute>
             </button>
 
-            <field name="communication" position="before">
+            <field name="memo" position="before">
                 <field name="reference"/>
             </field>
 
@@ -125,19 +120,11 @@
                 <field name="to_signature_date" readonly="1"/>
             </field>
 
-            <!-- al final lo dejamos editable -->
-            <!-- lo hacemos editable con tec features -->
-            <!-- <field name="payment_date" position="attributes">
-                <attribute name="readonly">1</attribute>
-            </field> -->
-
             <field name="partner_id" position="after">
                 <field name="transaction_id" attrs="{'invisible': [('transaction_id', '=', False)]}"/>
                 <field name="budget_id" attrs="{'invisible': [('transaction_id', '=', False)]}"/>
                 <field name="expedient_id" attrs="{'required': [('transaction_id', '!=', False)], 'invisible': [('transaction_id', '=', False)]}" domain="[('type', '=','payment'), ('state', '=', 'open'), ('current_location_id', 'in', user_location_ids), ('in_transit', '=', False)]" readonly="state != 'draft'"/>
                 <field name="budget_position_ids" widget="many2many_tags"/>
-                <!-- TODO enable -->
-                <!-- <field name="paid_withholding_ids" widget="many2many_tags"/> -->
                 <field name="invoice_ids" widget="many2many_tags"/>
             </field>
 
@@ -162,18 +149,10 @@
                 <attribute name="attrs">{'invisible': ['|', ('payment_subtype', '!=', 'double_validation'), ('state', '=', 'posted')], 'readonly': ['|', ('transaction_with_advance_payment', '=', False), ('state', '!=', 'draft')]}</attribute>
             </field>
 
-            <!-- modifications for signature states -->
-            <!-- add states -->
-            <!-- al final no agreguamos estos porque la idea es que no esten siempre -->
-            <!-- <field name="state" position="attributes">
-                <attribute name="statusbar_visible">confirmed,signature_process,signed,posted</attribute>
-            </field> -->
 
             <!-- Make post only visible from signed and available for hab director -->
             <button name="post" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '&amp;', ('payment_subtype', '=', 'simple'), ('state', '!=', 'draft'), '&amp;', ('payment_subtype', '=', 'double_validation'), ('state', '!=', 'signed')]}</attribute>
-                <!-- <attribute name="groups">public_budget.group_habilitacion_director</attribute> -->
-                <!-- al final hacemos que los usuarios puedan validar porque son los que entregan cheques e hicimos que la entrega del cheque se corresponda con la validación -->
                 <attribute name="groups">public_budget.group_habilitacion_usuario</attribute>
             </button>
 
@@ -196,17 +175,15 @@
         </field>
     </record>
 
-    <record id="view_account_payment_group_tec_features_form" model="ir.ui.view">
-        <field name="name">account.payment.group.form</field>
-        <field name="model">account.payment.group</field>
+    <!-- TODO 18 ver de implementar de otra manera (si es que realmente es necesario) -->
+    <!-- <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/> -->
+    <!-- no pude hacer que ande como esperaba con el grupo tc features, aún sin modo desarrollador se lo hacía visible, se ve que se comporta distinto que en menus -->
+    <!-- <record id="view_account_payment_group_tec_features_form" model="ir.ui.view">
+        <field name="name">account.payment.form</field>
+        <field name="model">account.payment</field>
         <field name="inherit_id" ref="view_account_payment_group_form"/>
         <field name="groups_id" eval="[(4, ref('base.group_system')),(4, ref('account.group_account_manager'))]"/>
-        <!-- <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/> -->
-        <!-- no pude hacer que ande como esperaba con el grupo tc features, aún sin modo desarrollador se lo hacía visible, se ve que se comporta distinto que en menus -->
         <field name="arch" type="xml">
-            <!-- <field name="payment_date" position="attributes">
-                <attribute name="readonly">0</attribute>
-            </field> -->
             <field name="confirmation_date" position="attributes">
                 <attribute name="readonly">0</attribute>
             </field>
@@ -214,6 +191,6 @@
                 <attribute name="readonly">0</attribute>
             </field>
         </field>
-    </record>
+    </record> -->
 
 </odoo>

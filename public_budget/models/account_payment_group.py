@@ -10,16 +10,18 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     # We add signature states
-    # state = fields.Selection(
-    #     selection_add=[
-    #         ('draft', 'Borrador'),
-    #         ('confirmed', 'Confirmado'),
-    #         ('signature_process', 'En Proceso de Firma'),
-    #         ('signed', 'Firmado'),
-    #         # we also change posted for paid
-    #         ('posted', 'Pagado'),
-    #         ('cancel', 'Cancelled'),
-    #     ])
+    state = fields.Selection(
+        selection_add=[
+            ('draft', "Draft"),
+            ('in_process', "In Process"),
+            ('confirmed', 'Confirmado'),  # new
+            ('signature_process', 'En Proceso de Firma'),  # new
+            ('signed', 'Firmado'),  # new
+            ('paid', "Paid"),
+            ('canceled', "Canceled"),
+            ('rejected', "Rejected"),
+        ], ondelete={'confirmed': 'set draft', 'signature_process': 'set draft', 'signed': 'set draft'}
+    )
     # agregamos reference que fue depreciado y estan acostumbrados a usar
     reference = fields.Char(
         string='Ref. pago',
@@ -280,7 +282,7 @@ class AccountPayment(models.Model):
                         'de cheque en cada línea de pago.\n'
                         '* ID de orden de pago: %s' % rec.id))
 
-            if rec.currency_id.round(rec.payments_amount - rec.to_pay_amount):
+            if rec.currency_id.round(rec.payment_total - rec.to_pay_amount):
                 raise ValidationError(_(
                     'No puede mandar a pagar una orden de pago que tiene '
                     'Importe a pagar distinto a Importe de los Pagos'))

@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
 
             <field name="date" position="after">
-                <field name="assignee_id" readonly="state != 'draft'"/>
+                <field name="assignee_id" groups="!public_budget.group_change_payment_assignee" readonly="state != 'draft'"/>
                 <field name="assignee_id" groups="public_budget.group_change_payment_assignee"/><!-- reemplaza vista view_account_payment_edit_assignee_form-->
                 <field name="return_payment_id" invisible="not return_payment_id"/>
             </field>

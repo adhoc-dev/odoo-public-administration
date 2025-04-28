@@ -373,7 +373,7 @@ class AccountPayment(models.Model):
         for rec in self:
             rec.public_invoice_ids.sudo()._compute_to_pay_amount()
 
-    @api.constrains('confirmation_date', 'payment_min_date', 'payment_date')
+    @api.constrains('confirmation_date', 'payment_min_date', 'date')
     def check_dates(self):
         _logger.info('Checking dates')
         for rec in self:
@@ -428,7 +428,7 @@ class AccountPayment(models.Model):
                     rec.unreconciled_amount,
                     advance_remaining_amount + rec.unreconciled_amount))
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         """
         When the payment group is created, assing document number.

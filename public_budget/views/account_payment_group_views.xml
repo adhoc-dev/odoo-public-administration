@@ -119,9 +119,9 @@
                 <field name="reference"/>
             </field>
 
-            <field name="payment_date" position="before">
+            <field name="date" position="before">
                 <field name="payment_base_date" readonly="state != 'draft'" required="transaction_id or advance_request_id"/>
-                <!-- <label for="payment_days"/> -->
+                <label for="payment_days"/>
                 <div class="oe_inline" readonly="state != 'draft'">
                     <field name="payment_days" class="oe_inline"/>
                     <field name="days_interval_type" class="oe_inline"/>
@@ -168,7 +168,8 @@
 
             <!-- Make post only visible from signed and available for hab director -->
             <button name="action_post" position="attributes">
-                <attribute name="invisible">payment_subtype == 'simple' and state != 'draft' or payment_subtype == 'double_validation' and state != 'signed'</attribute>
+                <!-- <attribute name="invisible">payment_subtype == 'simple' and state != 'draft' or payment_subtype == 'double_validation' and state != 'signed'</attribute> -->
+                <attribute name="invisible">state != 'draft' or state != 'signed'</attribute>
                 <attribute name="groups">public_budget.group_habilitacion_usuario</attribute>
             </button>
 

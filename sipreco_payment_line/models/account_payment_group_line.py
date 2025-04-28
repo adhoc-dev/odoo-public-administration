@@ -11,7 +11,7 @@ class AccountPaymentGroupLine(models.Model):
     _description = 'Account Vouchers Payment Lines'
 
     payment_group_id = fields.Many2one(
-        'account.payment.group',
+        'account.payment',
         required=True,
         ondelete='cascade',
     )

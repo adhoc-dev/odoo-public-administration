@@ -3,8 +3,8 @@
 
     <record id="view_vendor_payment_form" model="ir.ui.view">
         <field name="name">account.payment.group.customer.pay.form</field>
-        <field name="model">account.payment.group</field>
-        <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
             <notebook>
                 <page string="Líneas de Transferencia" groups="account.group_account_manager,public_budget.group_habilitacion_director">
@@ -30,7 +30,7 @@
                     </group>
                     <button type="action" name="%(sipreco_payment_line.action_account_payment_line_import)d" string="Importar"/>
                     <button type="object" name="check_payment_lines_total" string="Verificar Total"/>
-                    <button name="remove_all_transfer_lines" string="Eliminar todo" states="draft" type="object"/>
+                    <button name="remove_all_transfer_lines" string="Eliminar todo" invisible="state != 'draft'" type="object"/>
                     <field name="line_ids">
                         <list editable="bottom">
                             <field name="partner_id"/>

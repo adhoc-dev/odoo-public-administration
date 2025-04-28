@@ -5,7 +5,7 @@ import base64
 
 
 class AccountPaymentGroup(models.Model):
-    _inherit = "account.payment.group"
+    _inherit = "account.payment"
 
     line_ids = fields.One2many(
         'account.payment.group.line',

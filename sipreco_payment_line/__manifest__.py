@@ -10,7 +10,7 @@
     ],
     'data': [
         'wizards/account_payment_group_line_import_views.xml',
-        'views/account_payment_group_views.xml',
+        'views/account_payment_views.xml',
         'views/res_partner_bank_views.xml',
         'security/ir.model.access.csv',
     ],

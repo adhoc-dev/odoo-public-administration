@@ -205,7 +205,7 @@ class AccountPayment(models.Model):
     @api.depends('payment_base_date', 'payment_days', 'days_interval_type')
     def _compute_payment_min_date(self):
         for rec in self:
-            return
+            #return
             current_date = False
             business_days_to_add = rec.payment_days
             if rec.payment_base_date:
@@ -216,7 +216,7 @@ class AccountPayment(models.Model):
                         weekday = current_date.weekday()
                         # sunday = 6
                         if weekday >= 5 or self.env[
-                                'hr.holidays.public'].is_public_holiday(
+                                'resource.calendar.leaves'].is_public_holiday(
                                     current_date):
                             continue
                         # if current_date in holidays:
@@ -230,7 +230,7 @@ class AccountPayment(models.Model):
                 # sin Importar si el intervalo debe
                 #  considerar días habiles o no
                 while current_date.weekday() >= 5 or self.env[
-                        'hr.holidays.public'].is_public_holiday(
+                        'resource.calendar.leaves'].is_public_holiday(
                             current_date):
                     current_date = current_date + relativedelta(days=1)
             rec.payment_min_date = current_date

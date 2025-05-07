@@ -248,7 +248,7 @@ class PublicBudgetSubsidy(models.Model):
                     weekday = expiry_date.weekday()
                     # sunday = 6
                     if weekday >= 5 or self.env[
-                            'hr.holidays.public'].is_public_holiday(
+                            'resource.calendar.leaves'].is_public_holiday(
                                 expiry_date):
                         continue
                     business_days_to_add -= 1

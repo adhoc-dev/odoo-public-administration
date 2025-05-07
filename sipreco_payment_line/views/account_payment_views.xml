@@ -10,12 +10,12 @@
                 <page string="Líneas de Transferencia" groups="account.group_account_manager,public_budget.group_habilitacion_director">
                     <group>
                         <group>
-                            <field name="fecha_de_acreditacion"/>
-                            <field name="grupo_asingado_por_bmr"/>
-                            <field name="tipo_de_pago"/>
-                            <field name="sucursal_de_cuenta_debito"/>
-                            <field name="numero_de_cuenta_debito"/>
-                            <field name="tipo_de_cuenta"/>
+                            <field name="fecha_de_acreditacion" readonly="state == 'posted'"/>
+                            <field name="grupo_asingado_por_bmr"  readonly="state == 'posted'"/>
+                            <field name="tipo_de_pago" readonly="state == 'posted'"/>
+                            <field name="sucursal_de_cuenta_debito" readonly="state == 'posted'"/>
+                            <field name="numero_de_cuenta_debito" readonly="state == 'posted'"/>
+                            <field name="tipo_de_cuenta" readonly="state == 'posted'"/>
                         </group>
                         <group>
                             <field name="importe_total"/>
@@ -31,7 +31,7 @@
                     <button type="action" name="%(sipreco_payment_line.action_account_payment_line_import)d" string="Importar"/>
                     <button type="object" name="check_payment_lines_total" string="Verificar Total"/>
                     <button name="remove_all_transfer_lines" string="Eliminar todo" invisible="state != 'draft'" type="object"/>
-                    <field name="line_ids">
+                    <field name="line_ids" readonly="state != 'draft'">
                         <list editable="bottom">
                             <field name="partner_id"/>
                             <field name="cuit"/>

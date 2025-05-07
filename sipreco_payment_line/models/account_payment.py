@@ -11,33 +11,24 @@ class AccountPayment(models.Model):
         'account.payment.group.line',
         'payment_id',
         'Transfer Lines',
-        # states={'draft': [('readonly', False)]},
     )
-    fecha_de_acreditacion = fields.Date(
-        # states={'posted': [('readonly', True)]},
-    )
+    fecha_de_acreditacion = fields.Date()
     grupo_asingado_por_bmr = fields.Char(
         string='Grupo Asignado por B.M.R.',
         size=2,
-        # readonly=True,
-        # states={'posted': [('readonly', True)]},
     )
     tipo_de_pago = fields.Char(
         size=1,
-        # states={'posted': [('readonly', True)]},
     )
     sucursal_de_cuenta_debito = fields.Char(
         size=2,
-        # states={'posted': [('readonly', True)]},
     )
     numero_de_cuenta_debito = fields.Char(
         size=4,
         help='Por ej. 8114',
-        # states={'posted': [('readonly', True)]},
     )
     tipo_de_cuenta = fields.Char(
         size=1,
-        # states={'posted': [('readonly', True)]},
     )
     importe_total = fields.Monetary(
         compute='_compute_importe_total',

@@ -207,32 +207,19 @@ class AccountPayment(models.Model):
         for rec in self:
             #return
             current_date = False
-            business_days_to_add = rec.payment_days
             if rec.payment_base_date:
                 if rec.days_interval_type == 'business_days':
-                    current_date = rec.payment_base_date
-                    while business_days_to_add > 0:
-                        current_date = current_date + relativedelta(days=1)
-                        weekday = current_date.weekday()
-                        # sunday = 6
-                        if weekday >= 5 or self.env[
-                                'resource.calendar.leaves'].is_public_holiday(
-                                    current_date):
-                            continue
-                        # if current_date in holidays:
-                        #     continue
-                        business_days_to_add -= 1
+                    current_date = rec.company_id.resource_calendar_id.plan_days(rec.payment_days, rec.payment_base_date, compute_leaves=True)
                 else:
                     current_date = rec.payment_base_date + relativedelta(
                         days=rec.payment_days)
+                    # por mas que no sean business days, si la fecha no es laborable tomamos el proximo dia
+                    current_date = rec.company_id.resource_calendar_id.plan_hours(
+                        hours=1/3600.0,  # 1 segundo
+                        day_dt=rec.payment_base_date,
+                        compute_leaves=True,
+                    )
 
-                # además hacemos que la fecha mínima no pueda ser día no habil
-                # sin Importar si el intervalo debe
-                #  considerar días habiles o no
-                while current_date.weekday() >= 5 or self.env[
-                        'resource.calendar.leaves'].is_public_holiday(
-                            current_date):
-                    current_date = current_date + relativedelta(days=1)
             rec.payment_min_date = current_date
 
     # TODO enable

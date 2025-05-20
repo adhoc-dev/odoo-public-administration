@@ -27,7 +27,6 @@
         'account_payment_pro',
         'hr_holidays',
         'account_internal_transfer',
-        'hr_work_entry',
     ],
     'data': [
         'security/public_budget_group.xml',
@@ -110,7 +109,6 @@
         'data/ir_config_parameter_data.xml',
         'data/server_actions_data.xml',
         'data/ir_parameters.xml',
-        'data/resource_calendar_leaves.xml',
     ],
     'demo': [
         'demo/res_company_demo.xml',

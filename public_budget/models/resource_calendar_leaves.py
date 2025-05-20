@@ -1,11 +1,11 @@
 from datetime import timedelta
 
-from odoo import _, api, models
+from odoo import api, models
 
 
 
 
-class ResourceCalendarLeave(models.Model):
+class ResourceCalendarLeaves(models.Model):
     _inherit = 'resource.calendar.leaves'
 
     @api.model

@@ -155,7 +155,7 @@ class AccountPayment(models.Model):
         return super(AccountPayment, self.with_context(is_recipt=True)).post()
 
     def unlink(self):
-        if self.filtered('name'):
+        if self.filtered('name') or not self.env.context.get('force_delete'):
             raise ValidationError(_(
                 'No puede borrar una orden de pago que ya fue numerada'))
         return super().unlink()

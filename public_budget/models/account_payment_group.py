@@ -70,7 +70,7 @@ class AccountPayment(models.Model):
         comodel_name='public_budget.location',
         string='User Locations',
     )
-    payment_base_date = fields.Date(
+    payment_base_date = fields.Datetime(
         string='Payment Base Date',
         # nos pidieron que no haya valor por defecto
         # default=fields.Date.context_today,
@@ -216,7 +216,7 @@ class AccountPayment(models.Model):
                     # por mas que no sean business days, si la fecha no es laborable tomamos el proximo dia
                     current_date = rec.company_id.resource_calendar_id.plan_hours(
                         hours=1/3600.0,  # 1 segundo
-                        day_dt=rec.payment_base_date,
+                        day_dt=current_date,
                         compute_leaves=True,
                     )
 

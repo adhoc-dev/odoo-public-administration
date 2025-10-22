@@ -1,9 +1,9 @@
 
-# Instrucciones para Copilot – Revisión de código Odoo (v18.0)
+# Instrucciones para Copilot – Revisión de código Odoo (v19.0)
 
 ## Contexto
 
-* El repositorio contiene **módulos Odoo** compatibles con la versión **v18.0** (o versiones compatibles cercanas).
+* El repositorio contiene **módulos Odoo** compatibles con la versión **v19.0** (o versiones compatibles cercanas).
 * El objetivo es **revisar cambios de código** y **sugerir mejoras seguras y relevantes**, sin hacer revisiones excesivamente estrictas.
 
 ---
@@ -209,7 +209,7 @@ def migrate(cr, registry):
 | Manifest           | **Bump de versión obligatorio** si hay cambios en modelos/vistas/seguridad/datos; archivos referenciados |
 | Seguridad          | Accesos mínimos necesarios; reglas revisadas                                                             |
 | Migraciones        | **Si hay cambios estructurales, exigir script en `migrations/` (pre/post/end)** y describir qué hace     |
-| Rendimiento / ORM  | Evitar loops costosos; no SQL innecesario; aprovechar mejoras de v18.0                            |
+| Rendimiento / ORM  | Evitar loops costosos; no SQL innecesario; aprovechar mejoras de v19.0                            |
 | Ortografía & typos | Errores evidentes corregibles sin modificar idioma ni estilo                                             |
 
 ---
@@ -252,3 +252,5 @@ def migrate(cr, registry):
 1. **Detecta cambios en modelos/vistas/seguridad/datos → exige bump de `version` en `__manifest__.py`.**
 2. **Si hay cambio estructural → propone y describe script(s) de migración en `migrations/` (pre/post/end),** con enfoque idempotente y en lotes.
 3. Mantén el feedback **concreto, breve y accionable**.
+es
+

@@ -1,9 +1,10 @@
-# Instrucciones para Copilot – Revisión de código Odoo (v18.0)
+
+# Instrucciones para Copilot – Revisión de código Odoo (v19.0)
 
 ## Contexto
 
-* El repositorio contiene **módulos Odoo preparados para Odoo 18** (rama `18.0`).
-* El objetivo es **revisar cambios de código** y **sugerir mejoras seguras y relevantes**, sin caer en micro-comentarios.
+* El repositorio contiene **módulos Odoo** compatibles con la versión **v19.0** (o versiones compatibles cercanas).
+* El objetivo es **revisar cambios de código** y **sugerir mejoras seguras y relevantes**, sin hacer revisiones excesivamente estrictas.
 
 ---
 
@@ -248,7 +249,7 @@ En estos casos **normalmente corresponde** proponer migración (salvo notas en c
 **Esqueleto mínimo (ejemplo):**
 
 ```python
-# migrations/<module_version>/pre_rename_partner_ref.py
+# scripts/pre_19.0_rename_partner_ref.py
 from odoo import api, SUPERUSER_ID
 
 def migrate(cr, registry):
@@ -262,7 +263,7 @@ def migrate(cr, registry):
 ```
 
 ```python
-# migrations/<module_version>/post_backfill_stored_amount_total.py
+# scripts/post_19.0_backfill_stored_amount_total.py
 from odoo import api, SUPERUSER_ID
 
 def migrate(cr, registry):
@@ -285,8 +286,8 @@ def migrate(cr, registry):
 | Vistas XML         | Herencias correctas; campos válidos; adaptación a cambios de versión (p.ej. `<list>` vs `<tree>`)        |
 | Manifest           | **Bump de versión obligatorio** si hay cambios estructurales en modelos/vistas/records .xml; archivos referenciados |
 | Seguridad          | Accesos mínimos necesarios; reglas revisadas                                                             |
-| Migraciones        | **Si hay cambios estructurales, sugerir script en `migrations/` (pre/post/end)** y describir qué hace    |
-| Rendimiento / ORM  | Evitar loops costosos; no SQL innecesario; aprovechar las optimizaciones del ORM de la versión           |
+| Migraciones        | **Si hay cambios estructurales, exigir script en `scripts/` (pre/post/end)** y describir qué hace     |
+| Rendimiento / ORM  | Evitar loops costosos; no SQL innecesario; aprovechar mejoras de v19.0                            |
 | Ortografía & typos | Errores evidentes corregibles sin modificar idioma ni estilo                                             |
 
 ---
@@ -306,6 +307,7 @@ def migrate(cr, registry):
 
   * “El campo `partner_id` no se encuentra referenciado en la vista.”
   * “Este método redefine `write()` sin usar `super()`.”
+  * “En v19.0, `<tree>` ya no se usa; reemplazar por `<list>`.”
   * “Tip: hay un error ortográfico en el nombre del parámetro.”
   * **Bump + migración:** “Se renombra `old_ref` → `new_ref`: falta **bump de versión** y **pre-script** en `migrations/` para copiar valores antes del upgrade; añadir **post-script** para recompute del stored.”
 

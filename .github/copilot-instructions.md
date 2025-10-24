@@ -249,7 +249,7 @@ En estos casos **normalmente corresponde** proponer migración (salvo notas en c
 **Esqueleto mínimo (ejemplo):**
 
 ```python
-# scripts/pre_19.0_rename_partner_ref.py
+# migrations/18.0.4.0/pre_rename_partner_ref.py
 from odoo import api, SUPERUSER_ID
 
 def migrate(cr, registry):
@@ -263,7 +263,7 @@ def migrate(cr, registry):
 ```
 
 ```python
-# scripts/post_19.0_backfill_stored_amount_total.py
+# migrations/18.0.4.0/post_backfill_stored_amount_total.py
 from odoo import api, SUPERUSER_ID
 
 def migrate(cr, registry):
@@ -286,7 +286,7 @@ def migrate(cr, registry):
 | Vistas XML         | Herencias correctas; campos válidos; adaptación a cambios de versión (p.ej. `<list>` vs `<tree>`)        |
 | Manifest           | **Bump de versión obligatorio** si hay cambios estructurales en modelos/vistas/records .xml; archivos referenciados |
 | Seguridad          | Accesos mínimos necesarios; reglas revisadas                                                             |
-| Migraciones        | **Si hay cambios estructurales, exigir script en `scripts/` (pre/post/end)** y describir qué hace     |
+| Migraciones        | **Si hay cambios estructurales, exigir script en `migrations/` (pre/post/end)** y describir qué hace     |
 | Rendimiento / ORM  | Evitar loops costosos; no SQL innecesario; aprovechar mejoras de v19.0                            |
 | Ortografía & typos | Errores evidentes corregibles sin modificar idioma ni estilo                                             |
 
@@ -307,7 +307,6 @@ def migrate(cr, registry):
 
   * “El campo `partner_id` no se encuentra referenciado en la vista.”
   * “Este método redefine `write()` sin usar `super()`.”
-  * “En v19.0, `<tree>` ya no se usa; reemplazar por `<list>`.”
   * “Tip: hay un error ortográfico en el nombre del parámetro.”
   * **Bump + migración:** “Se renombra `old_ref` → `new_ref`: falta **bump de versión** y **pre-script** en `migrations/` para copiar valores antes del upgrade; añadir **post-script** para recompute del stored.”
 

@@ -1,10 +1,24 @@
-
 # Instrucciones para Copilot – Revisión de código Odoo (v19.0)
 
 ## Contexto
 
-* El repositorio contiene **módulos Odoo** compatibles con la versión **v19.0** (o versiones compatibles cercanas).
-* El objetivo es **revisar cambios de código** y **sugerir mejoras seguras y relevantes**, sin hacer revisiones excesivamente estrictas.
+* El repositorio contiene **módulos Odoo preparados para Odoo 19** (rama `19.0`).
+* A nivel técnico, Odoo 19 trae **mejoras importantes en el ORM**:
+
+  * nueva API de constraints e índices (`models.Constraint`, `models.Index`, `models.UniqueIndex`),
+  * nueva forma de definir dominios via clase `Domain`,
+
+    * Permite utilizar operadores &, | y ~ para combinar condiciones de forma más legible y mantenible.
+    * Se pueden utilizar sobre función `filtered`.
+  * nueva API para manejo de progresos en crons,
+
+    * Se cambia `notify_progress` por `commit_progress` en crons, ej.
+
+      ```python
+      self.env["ir.cron"]._commit_progress(remaining=n)
+      ...
+      self.env["ir.cron"]._commit_progress(processed=m)
+      ```
 
 ---
 
@@ -303,12 +317,12 @@ def migrate(cr, registry):
 
 ## Estilo del feedback (general)
 
-* Ser breve, claro y útil. Ejemplos:
+1. **Aplicar las mismas reglas generales** que en v18 para revisión de código, manifest y migraciones.
+2. **Diferenciar claramente**:
 
-  * “El campo `partner_id` no se encuentra referenciado en la vista.”
-  * “Este método redefine `write()` sin usar `super()`.”
-  * “Tip: hay un error ortográfico en el nombre del parámetro.”
-  * **Bump + migración:** “Se renombra `old_ref` → `new_ref`: falta **bump de versión** y **pre-script** en `migrations/` para copiar valores antes del upgrade; añadir **post-script** para recompute del stored.”
+   * cambios estructurales que requieren migración (según la lista ajustada),
+   * de ajustes menores que no la necesitan (p.ej. `Char → Text`, añadir valores de `selection`).
+3. Tener en cuenta las **novedades de Odoo 19**:
 
 * Evitar explicaciones largas o reescrituras completas salvo que el cambio sea claro y necesario.
 * Priorizar comentarios en forma de **lista corta de puntos** (3–7 ítems) y frases breves en lugar de bloques de texto extensos.

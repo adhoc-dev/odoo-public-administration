@@ -32,7 +32,6 @@
    * Si ya existe un docstring, puede sugerirse un estilo básico acorde a PEP8, pero **no será un error** si faltan `return`, tipos o parámetros documentados.
 5. No proponer cambios puramente estéticos (espacios, comillas simples vs dobles, orden de imports, etc.).
 6. Mantener el feedback **muy conciso** en los PRs: priorizar pocos puntos claros, evitar párrafos largos y no repetir el contexto que ya está explicado en la descripción del PR.
-7. Sobre traducciones: usar `_()` o `self.env._()` es indistinto; solo marcar si hay mensajes de error o textos no traducidos que deban serlo.
 
 ---
 
@@ -81,19 +80,17 @@
 
 ### Seguridad y rendimiento del ORM
 
-* Reforzar las advertencias sobre **SQL crudo**: si el diff muestra `self.env.cr.execute("...%s..." % var)` u otras interpolaciones inseguras, recomendar reemplazarlo por dominios ORM (`search`, `browse`) o, si es inevitable, parametrizar la query para heredar sanitización y reglas de acceso.
-  * Ejemplo inseguro que debe marcarse: `self.env.cr.execute("SELECT * FROM res_partner WHERE email = '%s'" % email)`.
-  * Variante segura aceptable: `self.env.cr.execute("SELECT * FROM res_partner WHERE email = %s", (email,))` o, mejor aún, `self.env['res.partner'].search([('email', '=', email)])`.
-* Señalar cualquier uso de `eval` o construcción manual de domains a partir de input de usuario (`eval(domain_string)`), proponiendo dominios expresados como listas de tuplas o mediante objetos `Domain`.
-  * Ejemplo inseguro: `records = self.env['res.partner'].search(eval("[('name','ilike','%s')]" % user_input))`.
-  * Forma segura: `records = self.env['res.partner'].search([('name', 'ilike', user_input)])`.
-* Vigilar patrones ineficientes comunes: bucles que ejecutan `search`/`write` por registro, filtrados manuales tras `search([])` o cómputos que podrían resolverse con `search_count`, `mapped`, `filtered` o `browse` masivo.
-  * Ejemplo a señalar: `for partner_id in partner_ids: partner = self.env['res.partner'].search([('id', '=', partner_id)])`.
-  * Proponer `partners = self.env['res.partner'].browse(partner_ids)` y operar sobre el recordset completo.
-* Para lecturas planas o exportaciones, preferir `search_fetch(fields=...)` para limitar columnas y reducir memoria.
-  * Caso ilustrativo: reemplazar listas armadas a mano con `result = self.env['res.partner'].search_fetch(domain=[('is_company', '=', True)], fields=['name', 'email', 'vat'])`.
-* Recordar que los writes vectorizados (`recordset.write`) y las operaciones en lotes evitan locks prolongados y mejoran la trazabilidad de auditoría del ORM.
-  * Ejemplo recomendado: `partners.write({'comment': 'Actualizado masivamente'})` en lugar de iterar y escribir registro por registro.
+* Detectar cualquier `self.env.cr.execute` con interpolación directa de parámetros y reemplazarlo por dominios ORM o queries parametrizadas (`execute(sql, params)`).
+  * Marcar ejemplos como `self.env.cr.execute("SELECT id FROM res_partner WHERE name = '%s'" % name)` y sugerir el dominio equivalente `self.env['res.partner'].search([('name', '=', name)])`.
+* Si se ve `eval()` o domains construidos como strings a partir de input externo, advertir del riesgo de ejecución arbitraria y sugerir el uso de objetos `Domain` o listas de tuplas.
+  * Ejemplo a evitar: `domain = "[('name','ilike','%s')]" % user_input; records = self.env['res.partner'].search(eval(domain))`.
+  * Alternativa segura: `records = self.env['res.partner'].search([('name', 'ilike', user_input)])` o `Domain([('name', 'ilike', user_input)])`.
+* Reforzar las recomendaciones de rendimiento conocidas: evitar `search([])` seguido de filtrado en Python, evitar loops con `write`/`search` uno a uno, y proponer alternativas como `search_count`, `mapped`, `filtered`, `browse(ids)` o `search_fetch` para lecturas planas.
+  * Ejemplo de mejora: usar `gmail_count = self.env['res.partner'].search_count([('email', 'ilike', 'gmail')])` en lugar de recorrer todos los partners buscando “gmail”.
+  * Para lecturas masivas, preferir `names = partners.mapped('name')` frente a acumular manualmente en un bucle, y usar `search_fetch` cuando se necesiten diccionarios planos.
+* En operaciones masivas, promover writes vectorizados y recomputes en lotes; en v19 se pueden combinar con `env.cr.commit()` controlado o helpers de progreso (`_commit_progress`) cuando el diff ya manipula crons.
+  * Ejemplo sugerido: `partners.write({'comment': 'Actualizado masivamente'})` y `_commit_progress(processed=len(partners))` en jobs largos.
+* Recordar que estas prácticas no solo mejoran performance: al mantenerse dentro del ORM se heredan los controles de acceso, auditoría y reglas multi-compañía.
 * Tener en cuenta la **navegación de campos relacionales** en Odoo: acceder a campos encadenados como `m.fiscal_position_id.l10n_ar_tax_ids` es seguro incluso cuando `fiscal_position_id` está vacío (devuelve un recordset vacío). Por eso, expresiones como `not m.fiscal_position_id.l10n_ar_tax_ids` ya cubren el caso en que no haya posición fiscal y **no hace falta** añadir un chequeo previo separado sobre `fiscal_position_id`.
 * Revisar accesos directos por índice en listas o recordsets, por ejemplo `lines[0].id`: si el conjunto está vacío puede lanzar `IndexError`. Copilot debe sugerir patrones más seguros (por ejemplo `if lines: first = lines[0]`) o, cuando sea posible, reescribir la lógica para trabajar sobre el recordset completo en lugar de un único elemento.
 
@@ -105,7 +102,7 @@ Cuando el diff sugiera **cambios de estructura de datos**, **siempre evaluar** s
 
 ### Reglas generales de estructura de `migrations/`
 
-* La carpeta dentro de `migrations/` debe corresponder con la versión declarada en el manifest (p. ej. `migrations/18.0.4.0/`).
+* La carpeta dentro de `migrations/` debe corresponder con la versión declarada en el manifest (p. ej. `migrations/19.0.1.0/`).
 * Los scripts deben ser idempotentes, trabajar en lotes y registrar logs claros.
 
 ### Ejemplos de cambios estructurales (actualizado con tus criterios)
@@ -179,6 +176,14 @@ En estos casos **normalmente corresponde** proponer migración (salvo notas en c
 
 ---
 
+## Cobertura de tests automatizados – reglas generales
+
+* Cuando el diff introduzca **funcionalidad nueva no trivial** (nuevos métodos con lógica compleja, nuevos flujos de negocio, refactors grandes, nuevas APIs, etc.), revisar si existe cobertura de tests razonable para esos cambios.
+* Si no se ve una cobertura clara, sugerir de forma **concreta y breve** qué tipo de test añadir (unitarios de modelo, tests de wizards, tours, pruebas sobre reportes, etc.), sin exigir una suite completa para cada cambio.
+* Para cambios pequeños o puramente cosméticos (ajustes en textos, vistas simples, pequeñas correcciones) **no hace falta** proponer la creación de tests nuevos.
+
+---
+
 ## Scripts de migración en `migrations/`: pre / post / end (reglas generales)
 
 > **Objetivo:** preservar datos y mantener instalabilidad/actualizabilidad segura.
@@ -237,15 +242,24 @@ En estos casos **normalmente corresponde** proponer migración (salvo notas en c
 
 ---
 
-## Cobertura de tests automatizados – reglas generales
+## Convenciones de scripts en `migrations/` (generales)
 
-* Cuando el diff introduzca **funcionalidad nueva no trivial** (nuevos métodos con lógica compleja, nuevos flujos de negocio, refactors grandes, nuevas APIs, etc.), revisar si existe cobertura de tests razonable para esos cambios.
-* Si no se ve una cobertura clara, sugerir de forma **concreta y breve** qué tipo de test añadir (unitarios de modelo, tests de wizards, tours, pruebas sobre reportes, etc.), sin exigir una suite completa para cada cambio.
-* Para cambios pequeños o puramente cosméticos (ajustes en textos, vistas simples, pequeñas correcciones) **no hace falta** proponer la creación de tests nuevos.
+* Ubicación: `migrations/<module_version>/`.
+* Nombres sugeridos:
+
+  * `pre_<breve-descripcion>.py`
+  * `post_<breve-descripcion>.py`
+* Requisitos:
+
+  * Idempotentes (seguros si se ejecutan más de una vez).
+  * En lotes (`batch_size` razonable) para datasets grandes.
+  * Logs claros (uso de `_logger.info`).
+  * Manejo de transacciones cuando aplique (evitar locks largos).
+  * Documentar al inicio **qué suponen** y **qué garantizan**.
 
 ---
 
-## Convenciones de scripts en `migrations/` (generales)
+## Checklist rápida para el review
 
 * Ubicación: `migrations/<module_version>/`.
 * Nombres sugeridos:
@@ -292,7 +306,7 @@ def migrate(cr, registry):
 
 ---
 
-## Checklist rápida para el review (general)
+## Heurística práctica para el bump de versión
 
 | Categoría          | Qué comprobar Copilot                                                                                    |
 | ------------------ | -------------------------------------------------------------------------------------------------------- |
@@ -315,17 +329,27 @@ def migrate(cr, registry):
 
 ---
 
-## Estilo del feedback (general)
+## Estilo del feedback
 
-1. **Aplicar las mismas reglas generales** que en v18 para revisión de código, manifest y migraciones.
-2. **Diferenciar claramente**:
-
-   * cambios estructurales que requieren migración (según la lista ajustada),
-   * de ajustes menores que no la necesitan (p.ej. `Char → Text`, añadir valores de `selection`).
-3. Tener en cuenta las **novedades de Odoo 19**:
-
-* Evitar explicaciones largas o reescrituras completas salvo que el cambio sea claro y necesario.
+* El feedback debe ser **breve, concreto y accionable**.
 * Priorizar comentarios en forma de **lista corta de puntos** (3–7 ítems) y frases breves en lugar de bloques de texto extensos.
+* Ejemplos rápidos:
+
+  * “La constraint nueva podría definirse como `models.Constraint` en lugar de `_sql_constraints`.”
+  * “La vista de cotización no está aprovechando las secciones configurables introducidas en 19.”
+  * “Se renombra el campo `state` almacenado; falta bump de versión y script de migración para copiar valores antes del upgrade.”
+
+---
+
+## Resumen operativo para Copilot
+
+1. **Detecta cambios en modelos/vistas/seguridad/datos → exige bump de `version` en `__manifest__.py`.**
+2. **Si hay cambio estructural (según la lista actualizada) → propone y describe script(s) de migración en `migrations/` (pre/post/end)**, con enfoque idempotente y en lotes.
+3. Distingue entre:
+
+   * **cuestiones generales**,
+   * y **matices específicos de Odoo 19**, por ej. preferir la nueva API de constraints/índices cuando corresponda.
+4. Mantén el feedback **concreto, breve y accionable**.
 
 ---
 

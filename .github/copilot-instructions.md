@@ -10,6 +10,7 @@
 
     * Permite utilizar operadores &, | y ~ para combinar condiciones de forma más legible y mantenible.
     * Se pueden utilizar sobre función `filtered`.
+    * También se puede usar `Domain('field', 'op', 'value')` o `Domain(domain)` donde domain es una lista como era habitual `[('field_1', 'op1', 'value1'), ('field_2', 'op2', 'value2'), ...]`.
   * nueva API para manejo de progresos en crons,
 
     * Se cambia `notify_progress` por `commit_progress` en crons, ej.
@@ -32,6 +33,7 @@
    * Si ya existe un docstring, puede sugerirse un estilo básico acorde a PEP8, pero **no será un error** si faltan `return`, tipos o parámetros documentados.
 5. No proponer cambios puramente estéticos (espacios, comillas simples vs dobles, orden de imports, etc.).
 6. Mantener el feedback **muy conciso** en los PRs: priorizar pocos puntos claros, evitar párrafos largos y no repetir el contexto que ya está explicado en la descripción del PR.
+7. Sobre traducciones: usar `_()` o `self.env._()` es indistinto; solo marcar si hay mensajes de error o textos no traducidos que deban serlo.
 
 ---
 
@@ -85,6 +87,7 @@
 * Si se ve `eval()` o domains construidos como strings a partir de input externo, advertir del riesgo de ejecución arbitraria y sugerir el uso de objetos `Domain` o listas de tuplas.
   * Ejemplo a evitar: `domain = "[('name','ilike','%s')]" % user_input; records = self.env['res.partner'].search(eval(domain))`.
   * Alternativa segura: `records = self.env['res.partner'].search([('name', 'ilike', user_input)])` o `Domain([('name', 'ilike', user_input)])`.
+  * Nota: En Odoo 19, `Domain('field', 'op', 'value')` es válido y no debe marcarse como incorrecto. Los operadores `&`, `|` y `~` pueden usarse sobre instancias de `Domain` para combinar condiciones.
 * Reforzar las recomendaciones de rendimiento conocidas: evitar `search([])` seguido de filtrado en Python, evitar loops con `write`/`search` uno a uno, y proponer alternativas como `search_count`, `mapped`, `filtered`, `browse(ids)` o `search_fetch` para lecturas planas.
   * Ejemplo de mejora: usar `gmail_count = self.env['res.partner'].search_count([('email', 'ilike', 'gmail')])` en lugar de recorrer todos los partners buscando “gmail”.
   * Para lecturas masivas, preferir `names = partners.mapped('name')` frente a acumular manualmente en un bucle, y usar `search_fetch` cuando se necesiten diccionarios planos.
@@ -343,7 +346,7 @@ def migrate(cr, registry):
 
 ## Resumen operativo para Copilot
 
-1. **Detecta cambios en modelos/vistas/seguridad/datos → exige bump de `version` en `__manifest__.py`.**
+1. **Detecta cambios estructurales en modelos, vistas o records .xml → exige bump de `version` en `__manifest__.py` si no está incrementada.**
 2. **Si hay cambio estructural (según la lista actualizada) → propone y describe script(s) de migración en `migrations/` (pre/post/end)**, con enfoque idempotente y en lotes.
 3. Distingue entre:
 

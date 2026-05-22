@@ -10,7 +10,8 @@ class AccoutMove(models.Model):
     )
 
     def action_pay_tax_settlement(self):
-        return self.settled_line_ids.action_pay_tax_settlement()
+        line = self.settled_line_ids.filtered(lambda l: l.tax_state == 'to_pay')[:1]
+        return line.action_pay_tax_settlement()
 
     def _compute_matched_to_pay(self):
         for rec in self:
